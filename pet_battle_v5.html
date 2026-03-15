@@ -84,6 +84,12 @@
                 <div class="card-grid" id="bagGrid"></div>
             </div>
             
+            <div class="page" id="page-team">
+                <div class="page-title"><h1>⚔️ 我的队伍</h1></div>
+                <div id="teamDisplay"><div class="empty-state"><div style="font-size: 50px; margin-bottom: 10px;">👥</div><p style="font-size: 12px;">队伍为空，请从背包选择宠物</p></div></div>
+                <div style="margin-top: 15px;"><p style="color: #888; font-size: 11px; margin-bottom: 8px;">点击卡片添加到队伍（最多3只）</p><div class="card-grid" id="teamSelectGrid"></div></div>
+            </div>
+            
             <div class="page" id="page-market">
                 <div class="page-title"><h1>🏪 卡片市场</h1></div>
                 <div class="market-area">
@@ -127,6 +133,7 @@
         <div class="nav-bar">
             <div class="nav-item active" onclick="switchPage('gacha')"><span class="nav-icon">🎰</span><span class="nav-text">召唤</span></div>
             <div class="nav-item" onclick="switchPage('bag')"><span class="nav-icon">🎒</span><span class="nav-text">背包</span></div>
+            <div class="nav-item" onclick="switchPage('team')"><span class="nav-icon">👥</span><span class="nav-text">队伍</span></div>
             <div class="nav-item" onclick="switchPage('market')"><span class="nav-icon">🏪</span><span class="nav-text">市场</span></div>
             <div class="nav-item" onclick="switchPage('upgrade')"><span class="nav-icon">⬆️</span><span class="nav-text">升级</span></div>
             <div class="nav-item" onclick="switchPage('battle')"><span class="nav-icon">⚔️</span><span class="nav-text">战斗</span></div>
@@ -187,6 +194,7 @@
             document.getElementById('page-' + page).classList.add('active');
             event.target.closest('.nav-item').classList.add('active');
             if (page === 'bag') updateBag();
+            if (page === 'team') updateTeamPage();
             if (page === 'market') updateMarket();
             if (page === 'upgrade') updateUpgrade();
             if (page === 'battle') {
@@ -221,13 +229,61 @@
             const grid = document.getElementById('bagGrid');
             if (gameData.cards.length === 0) { grid.innerHTML = '<div class="empty-state"><div style="font-size: 50px;">🎒</div><p style="font-size: 12px;">背包空空如也</p></div>'; return; }
             grid.innerHTML = gameData.cards.map((card, i) => `
-                <div class="card ${card.rarity}">
+                <div class="card ${card.rarity}" onclick="addToTeam(${i})" style="cursor: pointer;">
                     ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
                     <div style="font-size: 10px;">[${card.rarity}]</div>
                     <div class="card-emoji">${card.emoji}</div>
                     <div class="card-name">${card.name}</div>
                     <div class="card-stats">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>
                 </div>`).join('');
+        }
+
+        function addToTeam(cardIdx) {
+            if (!gameData.team) gameData.team = [];
+            if (gameData.team.length >= 3) { alert('队伍已满！最多3只宠物'); return; }
+            const card = gameData.cards[cardIdx];
+            if (gameData.team.find(c => c.id === card.id)) { alert('该宠物已在队伍中！'); return; }
+            gameData.team.push(card); 
+            alert(`${card.emoji} ${card.name} 已加入队伍！`); 
+            updateTeamPage();
+            saveGame();
+        }
+
+        function updateTeamPage() {
+            if (!gameData.team) gameData.team = [];
+            const display = document.getElementById('teamDisplay');
+            if (gameData.team.length === 0) { 
+                display.innerHTML = `<div class="empty-state"><div style="font-size: 50px; margin-bottom: 10px;">👥</div><p style="font-size: 12px;">队伍为空，请从背包选择宠物</p></div>`; 
+            } else { 
+                display.innerHTML = gameData.team.map((card, idx) => `
+                    <div class="card ${card.rarity}">
+                        ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 10px;">[${card.rarity}]</span>
+                            <button onclick="removeFromTeam(${idx})" style="background: #e74c3c; border: none; color: white; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-size: 11px;">移除</button>
+                        </div>
+                        <div class="card-emoji">${card.emoji}</div>
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-stats">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>
+                    </div>`).join(''); 
+            }
+            const selectGrid = document.getElementById('teamSelectGrid');
+            selectGrid.innerHTML = gameData.cards.map((card, idx) => { 
+                const inTeam = gameData.team.find(c => c.id === card.id); 
+                return `
+                    <div class="card ${card.rarity}" onclick="${inTeam ? '' : `addToTeam(${idx})`}" style="${inTeam ? 'opacity: 0.5;' : 'cursor: pointer;'}">
+                        ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
+                        <div style="font-size: 10px;">${inTeam ? '✓ 已上阵' : `[${card.rarity}]`}</div>
+                        <div class="card-emoji">${card.emoji}</div>
+                        <div class="card-name">${card.name}</div>
+                    </div>`; 
+            }).join('');
+        }
+
+        function removeFromTeam(idx) { 
+            gameData.team.splice(idx, 1); 
+            updateTeamPage(); 
+            saveGame(); 
         }
 
         // 市场功能
@@ -339,11 +395,12 @@
 
         // 战斗功能
         function updateBattlePage() {
+            if (!gameData.team) gameData.team = [];
             const myFighter = document.getElementById('myFighter');
             const enemyFighter = document.getElementById('enemyFighter');
             
-            if (gameData.cards.length > 0) {
-                const card = gameData.cards[0];
+            if (gameData.team.length > 0) {
+                const card = gameData.team[0];
                 myFighter.innerHTML = `<div class="battle-emoji">${card.emoji}</div><div class="battle-name">${card.name}</div><div style="font-size: 10px; color: #888;">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>`;
             } else {
                 myFighter.innerHTML = `<div class="battle-emoji">❓</div><div class="battle-name">无卡片</div>`;
@@ -359,7 +416,7 @@
                 enemyFighter.innerHTML = `<div class="battle-emoji">🎴</div><div class="battle-name">???</div>`;
             }
             
-            document.getElementById('battleBtn').disabled = gameData.cards.length === 0 || isBattling;
+            document.getElementById('battleBtn').disabled = gameData.team.length === 0 || isBattling;
             document.getElementById('battleBtn').textContent = isBattling ? '战斗中...' : '开始战斗';
             document.getElementById('refreshEnemyBtn').style.display = isBattling ? 'none' : 'inline-block';
         }
@@ -372,14 +429,17 @@
         }
 
         function startBattle() {
-            if (gameData.cards.length === 0 || isBattling) return;
+            if (!gameData.team || gameData.team.length === 0 || isBattling) {
+                if (gameData.team.length === 0) alert('请先组建队伍！去背包页面添加卡片到队伍');
+                return;
+            }
             isBattling = true;
             
             // 翻牌 reveal
             enemyRevealed = true;
             updateBattlePage();
             
-            const myPet = {...gameData.cards[0], currentHp: gameData.cards[0].hp};
+            const myPet = {...gameData.team[0], currentHp: gameData.team[0].hp};
             const enemyPet = {...currentEnemy, currentHp: currentEnemy.hp};
             
             const log = document.getElementById('battleLog'), rewardArea = document.getElementById('rewardArea');
