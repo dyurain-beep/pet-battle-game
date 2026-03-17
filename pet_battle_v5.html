@@ -90,6 +90,9 @@
                     <div style="font-size: 80px; margin-bottom: 15px;">🎰</div>
                     <button class="btn" onclick="pull()">单抽 100💰</button>
                     <div style="margin-top: 10px; font-size: 11px; color: #888;">🔴 H8: <span id="pityH8">0</span>/100 | 🟡 SSR: <span id="pitySSR">0</span>/50</div>
+                    <div style="margin-top: 20px;">
+                        <button class="btn refresh small" onclick="resetGame()" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">🗑️ 重新开始游戏</button>
+                    </div>
                 </div>
                 <div id="gachaResult"></div>
             </div>
@@ -185,6 +188,27 @@ let gameData = {
     pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0}
 };
 let currentEnemy = null, isBattling = false, enemyRevealed = false;
+
+function resetGame() {
+    if (confirm('确定要重置存档吗？所有进度将丢失！')) {
+        localStorage.removeItem('petBattleSave_v5');
+        gameData = {
+            coins: 5000, gems: 1000, cards: [], market: [], orchard: [],
+            pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0}
+        };
+        currentEnemy = null;
+        isBattling = false;
+        enemyRevealed = false;
+        updateUI();
+        updateBag();
+        updateTeamPage();
+        updateMarket();
+        updateOrchard();
+        updateUpgrade();
+        updateBattlePage();
+        alert('存档已重置！');
+    }
+}
 
 function loadGame() {
     const saved = localStorage.getItem('petBattleSave_v5');
