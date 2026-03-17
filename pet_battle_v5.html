@@ -19,6 +19,8 @@
         .btn.small { padding: 6px 15px; font-size: 12px; }
         .btn.refresh { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
         .btn.upgrade { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .btn-atk { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .btn-def { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
         .card { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); border-radius: 15px; padding: 12px; text-align: center; border: 2px solid; margin-bottom: 8px; position: relative; }
         .card.N { border-color: #95a5a6; } .card.R { border-color: #3498db; } .card.SR { border-color: #9b59b6; } .card.SSR { border-color: #f1c40f; } .card.H8 { border-color: #e74c3c; }
         .card-emoji { font-size: 40px; margin: 3px 0; }
@@ -56,6 +58,20 @@
         .offer-btn.accept { background: #27ae60; color: white; }
         .offer-btn.reject { background: #e74c3c; color: white; }
         .upgrade-area { background: linear-gradient(180deg, rgba(52,152,219,0.2) 0%, transparent 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .orchard-area { background: linear-gradient(180deg, rgba(155,89,182,0.2) 0%, transparent 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .orchard-ground { background: linear-gradient(180deg, #5d4037 0%, #795548 100%); border-radius: 12px; padding: 12px; margin-top: 10px; min-height: 100px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; }
+        .tree { display: inline-block; font-size: 35px; margin: 5px; cursor: pointer; position: relative; }
+        .tree:hover { transform: scale(1.1); }
+        .tree .growth { position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); font-size: 10px; background: #27ae60; padding: 2px 5px; border-radius: 5px; }
+        .fruit-ready { animation: fruitBounce 0.5s ease infinite; }
+        @keyframes fruitBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .lucky-bag { background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%); border-radius: 15px; padding: 20px; text-align: center; margin-top: 15px; animation: bagShake 0.5s ease; }
+        @keyframes bagShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+        .lucky-bag-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .bag-reward { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .bag-btn { background: #fff; color: #e74c3c; border: none; padding: 8px 15px; border-radius: 10px; font-size: 11px; cursor: pointer; margin: 3px; }
+        .tip-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px 30px; border-radius: 15px; z-index: 3000; animation: tipPop 1.5s ease forwards; pointer-events: none; }
+        @keyframes tipPop { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 70% { opacity: 1; } 100% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -67,7 +83,6 @@
                 <div class="currency-item"><span>💎</span><span id="gems">1000</span></div>
             </div>
         </div>
-        
         <div class="main-content">
             <div class="page active" id="page-gacha">
                 <div class="page-title"><h1>🎰 宠物召唤</h1></div>
@@ -78,18 +93,15 @@
                 </div>
                 <div id="gachaResult"></div>
             </div>
-            
             <div class="page" id="page-bag">
                 <div class="page-title"><h1>🎒 背包 (<span id="bagCount">0</span>)</h1></div>
                 <div class="card-grid" id="bagGrid"></div>
             </div>
-            
             <div class="page" id="page-team">
                 <div class="page-title"><h1>⚔️ 我的队伍</h1></div>
                 <div id="teamDisplay"><div class="empty-state"><div style="font-size: 50px; margin-bottom: 10px;">👥</div><p style="font-size: 12px;">队伍为空，请从背包选择宠物</p></div></div>
                 <div style="margin-top: 15px;"><p style="color: #888; font-size: 11px; margin-bottom: 8px;">点击卡片添加到队伍（最多3只）</p><div class="card-grid" id="teamSelectGrid"></div></div>
             </div>
-            
             <div class="page" id="page-market">
                 <div class="page-title"><h1>🏪 卡片市场</h1></div>
                 <div class="market-area">
@@ -102,16 +114,24 @@
                         <div class="empty-state"><div style="font-size: 40px;">🌱</div><p style="font-size: 12px;">草地上还没有卡片</p></div>
                     </div>
                 </div>
+                <div class="orchard-area">
+                    <p style="color: #888; font-size: 12px; margin-bottom: 10px;">🌳 种植果树，游客品尝后会给小费~</p>
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <button class="btn small" onclick="plantTree()">🌱 种果树 (50💰)</button>
+                        <button class="btn refresh small" onclick="visitorVisit()">🚶 邀请游客</button>
+                    </div>
+                    <div class="orchard-ground" id="orchardGround">
+                        <div class="empty-state"><div style="font-size: 40px;">🌳</div><p style="font-size: 12px;">果园空空如也</p></div>
+                    </div>
+                </div>
             </div>
-            
             <div class="page" id="page-upgrade">
                 <div class="page-title"><h1>⬆️ 卡片升级</h1></div>
                 <div class="upgrade-area">
-                    <p style="color: #888; font-size: 12px; margin-bottom: 10px;">使用💎钻石升级（H8不可升级，最多+3）</p>
+                    <p style="color: #888; font-size: 12px; margin-bottom: 10px;">💎升级生命 | ⚔️升级攻击 | 🛡️升级防御</p>
                     <div class="card-grid" id="upgradeGrid"></div>
                 </div>
             </div>
-            
             <div class="page" id="page-battle">
                 <div class="page-title"><h1>⚔️ 竞技场</h1></div>
                 <div class="battle-arena">
@@ -129,371 +149,437 @@
                 </div>
             </div>
         </div>
-        
         <div class="nav-bar">
-            <div class="nav-item active" onclick="switchPage('gacha')"><span class="nav-icon">🎰</span><span class="nav-text">召唤</span></div>
-            <div class="nav-item" onclick="switchPage('bag')"><span class="nav-icon">🎒</span><span class="nav-text">背包</span></div>
-            <div class="nav-item" onclick="switchPage('team')"><span class="nav-icon">👥</span><span class="nav-text">队伍</span></div>
-            <div class="nav-item" onclick="switchPage('market')"><span class="nav-icon">🏪</span><span class="nav-text">市场</span></div>
-            <div class="nav-item" onclick="switchPage('upgrade')"><span class="nav-icon">⬆️</span><span class="nav-text">升级</span></div>
-            <div class="nav-item" onclick="switchPage('battle')"><span class="nav-icon">⚔️</span><span class="nav-text">战斗</span></div>
+            <div class="nav-item active" onclick="switchPage('gacha', this)"><span class="nav-icon">🎰</span><span class="nav-text">召唤</span></div>
+            <div class="nav-item" onclick="switchPage('bag', this)"><span class="nav-icon">🎒</span><span class="nav-text">背包</span></div>
+            <div class="nav-item" onclick="switchPage('team', this)"><span class="nav-icon">👥</span><span class="nav-text">队伍</span></div>
+            <div class="nav-item" onclick="switchPage('market', this)"><span class="nav-icon">🏪</span><span class="nav-text">市场</span></div>
+            <div class="nav-item" onclick="switchPage('upgrade', this)"><span class="nav-icon">⬆️</span><span class="nav-text">升级</span></div>
+            <div class="nav-item" onclick="switchPage('battle', this)"><span class="nav-icon">⚔️</span><span class="nav-text">战斗</span></div>
         </div>
     </div>
-
     <script>
-        const PETS = {
-            N: [{name: "小仓鼠", emoji: "🐹", hp: 100, atk: 20}, {name: "小金鱼", emoji: "🐠", hp: 100, atk: 20}, {name: "小乌龟", emoji: "🐢", hp: 120, atk: 15}, {name: "小蜗牛", emoji: "🐌", hp: 150, atk: 10}, {name: "小蚂蚁", emoji: "🐜", hp: 80, atk: 25}],
-            R: [{name: "小猫咪", emoji: "🐱", hp: 150, atk: 35}, {name: "小狗勾", emoji: "🐶", hp: 180, atk: 30}, {name: "小兔子", emoji: "🐰", hp: 140, atk: 40}],
-            SR: [{name: "小狐狸", emoji: "🦊", hp: 250, atk: 60}, {name: "小狼崽", emoji: "🐺", hp: 280, atk: 55}],
-            SSR: [{name: "小老虎", emoji: "🐯", hp: 400, atk: 100}, {name: "小狮子", emoji: "🦁", hp: 450, atk: 90}],
-            H8: [{name: "小火龙", emoji: "🐲", hp: 800, atk: 200}, {name: "小凤凰", emoji: "🦅", hp: 700, atk: 220}]
-        };
-        const RARITY = [{r: 'N', p: 0.30}, {r: 'R', p: 0.20}, {r: 'SR', p: 0.10}, {r: 'SSR', p: 0.05}, {r: 'H8', p: 0.01}];
-        const BASE_PRICES = {N: 50, R: 100, SR: 200, SSR: 500, H8: 2000};
-        const UPGRADE_COST = {1: 50, 2: 100, 3: 200};
-        
-        let gameData = {coins: 5000, gems: 1000, cards: [], market: [], pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0}};
-        let currentEnemy = null, isBattling = false, enemyRevealed = false;
+const PETS = {
+    N: [{name: "小仓鼠", emoji: "🐹", hp: 100, atk: 20, def: 5}, {name: "小金鱼", emoji: "🐠", hp: 100, atk: 20, def: 5}, {name: "小乌龟", emoji: "🐢", hp: 120, atk: 15, def: 10}, {name: "小蜗牛", emoji: "🐌", hp: 150, atk: 10, def: 8}, {name: "小蚂蚁", emoji: "🐜", hp: 80, atk: 25, def: 3}],
+    R: [{name: "小猫咪", emoji: "🐱", hp: 150, atk: 35, def: 10}, {name: "小狗勾", emoji: "🐶", hp: 180, atk: 30, def: 12}, {name: "小兔子", emoji: "🐰", hp: 140, atk: 40, def: 8}],
+    SR: [{name: "小狐狸", emoji: "🦊", hp: 250, atk: 60, def: 20}, {name: "小狼崽", emoji: "🐺", hp: 280, atk: 55, def: 25}],
+    SSR: [{name: "小老虎", emoji: "🐯", hp: 400, atk: 100, def: 40}, {name: "小狮子", emoji: "🦁", hp: 450, atk: 90, def: 45}],
+    H8: [{name: "小火龙", emoji: "🐲", hp: 800, atk: 200, def: 80}, {name: "小凤凰", emoji: "🦅", hp: 700, atk: 220, def: 70}]
+};
+const RARITY = [{r: 'N', p: 0.30}, {r: 'R', p: 0.20}, {r: 'SR', p: 0.10}, {r: 'SSR', p: 0.05}, {r: 'H8', p: 0.01}];
+const BASE_PRICES = {N: 50, R: 100, SR: 200, SSR: 500, H8: 2000};
+const UPGRADE_COST_HP = {1: 50, 2: 100, 3: 200};
+const UPGRADE_COST_ATK = {1: 80, 2: 150, 3: 300};
+const UPGRADE_COST_DEF = {1: 60, 2: 120, 3: 250};
+const TREES = [
+    {emoji: "🍎", name: "苹果树", growTime: 30},
+    {emoji: "🍊", name: "橘子树", growTime: 25},
+    {emoji: "🍇", name: "葡萄树", growTime: 20},
+    {emoji: "🍓", name: "草莓丛", growTime: 15},
+    {emoji: "🍑", name: "桃子树", growTime: 35},
+    {emoji: "🍒", name: "樱桃树", growTime: 30}
+];
 
-        function loadGame() {
-            const saved = localStorage.getItem('petBattleSave_v5');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    gameData = {...gameData, ...parsed};
-                    if (!gameData.market) gameData.market = [];
-                    updateUI();
-                } catch(e) {}
-            }
-        }
-        
-        function saveGame() {
-            localStorage.setItem('petBattleSave_v5', JSON.stringify(gameData));
-            const status = document.getElementById('saveStatus');
-            status.classList.add('show');
-            setTimeout(() => status.classList.remove('show'), 1500);
-        }
-        
-        function updateUI() {
-            document.getElementById('coins').textContent = gameData.coins;
-            document.getElementById('gems').textContent = gameData.gems;
-            document.getElementById('pityH8').textContent = gameData.pityH8;
-            document.getElementById('pitySSR').textContent = gameData.pitySSR;
-        }
-        
-        function generateEnemy() {
-            const rarities = ['N', 'N', 'R', 'R', 'SR', 'SR', 'SSR'];
-            const r = rarities[Math.floor(Math.random() * rarities.length)];
-            const pet = PETS[r][Math.floor(Math.random() * PETS[r].length)];
-            return {...pet, rarity: r, level: 0};
-        }
+let gameData = {
+    coins: 5000, gems: 1000, cards: [], market: [], orchard: [],
+    pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0}
+};
+let currentEnemy = null, isBattling = false, enemyRevealed = false;
 
-        function switchPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            event.target.closest('.nav-item').classList.add('active');
-            if (page === 'bag') updateBag();
-            if (page === 'team') updateTeamPage();
-            if (page === 'market') updateMarket();
-            if (page === 'upgrade') updateUpgrade();
-            if (page === 'battle') {
-                if (!currentEnemy) currentEnemy = generateEnemy();
-                enemyRevealed = false;
-                updateBattlePage();
-            }
-        }
-
-        function pull() {
-            if (gameData.coins < 100) { alert('金币不足！'); return; }
-            gameData.coins -= 100;
-            let rarity;
-            if (gameData.pityH8 >= 100) { rarity = 'H8'; gameData.pityH8 = 0; }
-            else if (gameData.pitySSR >= 50) { rarity = 'SSR'; gameData.pitySSR = 0; gameData.pityH8++; }
-            else {
-                const rand = Math.random(); let cum = 0;
-                for (let r of RARITY) { cum += r.p; if (rand <= cum) { rarity = r.r; break; } }
-                if (rarity === 'H8') { gameData.pityH8 = 0; gameData.pitySSR = 0; }
-                else if (rarity === 'SSR') { gameData.pityH8++; gameData.pitySSR = 0; }
-                else { gameData.pityH8++; gameData.pitySSR++; }
-            }
-            const pet = PETS[rarity][Math.floor(Math.random() * PETS[rarity].length)];
-            const card = {...pet, rarity, id: Date.now(), maxHp: pet.hp, level: 0};
-            gameData.cards.push(card);
-            document.getElementById('gachaResult').innerHTML = `<div class="card ${rarity}"><div style="font-size: 11px;">[${rarity}]</div><div class="card-emoji">${pet.emoji}</div><div class="card-name">${pet.name}</div><div class="card-stats">❤️${pet.hp} ⚔️${pet.atk}</div></div>`;
-            updateUI(); saveGame();
-        }
-
-        function updateBag() {
-            document.getElementById('bagCount').textContent = gameData.cards.length;
-            const grid = document.getElementById('bagGrid');
-            if (gameData.cards.length === 0) { grid.innerHTML = '<div class="empty-state"><div style="font-size: 50px;">🎒</div><p style="font-size: 12px;">背包空空如也</p></div>'; return; }
-            grid.innerHTML = gameData.cards.map((card, i) => `
-                <div class="card ${card.rarity}" onclick="addToTeam(${i})" style="cursor: pointer;">
-                    ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
-                    <div style="font-size: 10px;">[${card.rarity}]</div>
-                    <div class="card-emoji">${card.emoji}</div>
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-stats">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>
-                </div>`).join('');
-        }
-
-        function addToTeam(cardIdx) {
-            if (!gameData.team) gameData.team = [];
-            if (gameData.team.length >= 3) { alert('队伍已满！最多3只宠物'); return; }
-            const card = gameData.cards[cardIdx];
-            if (gameData.team.find(c => c.id === card.id)) { alert('该宠物已在队伍中！'); return; }
-            gameData.team.push(card); 
-            alert(`${card.emoji} ${card.name} 已加入队伍！`); 
-            updateTeamPage();
-            saveGame();
-        }
-
-        function updateTeamPage() {
-            if (!gameData.team) gameData.team = [];
-            const display = document.getElementById('teamDisplay');
-            if (gameData.team.length === 0) { 
-                display.innerHTML = `<div class="empty-state"><div style="font-size: 50px; margin-bottom: 10px;">👥</div><p style="font-size: 12px;">队伍为空，请从背包选择宠物</p></div>`; 
-            } else { 
-                display.innerHTML = gameData.team.map((card, idx) => `
-                    <div class="card ${card.rarity}">
-                        ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 10px;">[${card.rarity}]</span>
-                            <button onclick="removeFromTeam(${idx})" style="background: #e74c3c; border: none; color: white; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-size: 11px;">移除</button>
-                        </div>
-                        <div class="card-emoji">${card.emoji}</div>
-                        <div class="card-name">${card.name}</div>
-                        <div class="card-stats">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>
-                    </div>`).join(''); 
-            }
-            const selectGrid = document.getElementById('teamSelectGrid');
-            selectGrid.innerHTML = gameData.cards.map((card, idx) => { 
-                const inTeam = gameData.team.find(c => c.id === card.id); 
-                return `
-                    <div class="card ${card.rarity}" onclick="${inTeam ? '' : `addToTeam(${idx})`}" style="${inTeam ? 'opacity: 0.5;' : 'cursor: pointer;'}">
-                        ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
-                        <div style="font-size: 10px;">${inTeam ? '✓ 已上阵' : `[${card.rarity}]`}</div>
-                        <div class="card-emoji">${card.emoji}</div>
-                        <div class="card-name">${card.name}</div>
-                    </div>`; 
-            }).join('');
-        }
-
-        function removeFromTeam(idx) { 
-            gameData.team.splice(idx, 1); 
-            updateTeamPage(); 
-            saveGame(); 
-        }
-
-        // 市场功能
-        function updateMarket() {
-            const grass = document.getElementById('marketGrass');
-            if (gameData.market.length === 0) {
-                grass.innerHTML = '<div class="empty-state"><div style="font-size: 40px;">🌱</div><p style="font-size: 12px;">草地上还没有卡片</p></div>';
-                return;
-            }
-            grass.innerHTML = gameData.market.map((item, i) => `
-                <div class="market-card ${item.card.rarity}">
-                    <div style="font-size: 10px;">[${item.card.rarity}] ${item.card.name}</div>
-                    <div style="font-size: 35px;">${item.card.emoji}</div>
-                    <div class="market-offer">
-                        <div>买家出价: <span class="offer-price">${item.offer}💰</span></div>
-                        <div class="offer-buttons">
-                            <button class="offer-btn accept" onclick="acceptOffer(${i})">✓ 卖出</button>
-                            <button class="offer-btn reject" onclick="rejectOffer(${i})">✗ 拒绝</button>
-                        </div>
-                    </div>
-                </div>`).join('');
-        }
-
-        function listCardForSale() {
-            const available = gameData.cards.filter(c => !gameData.market.find(m => m.card.id === c.id));
-            if (available.length === 0) { alert('没有可上架的卡片！'); return; }
-            
-            let html = '<p style="color: #888; font-size: 12px; margin-bottom: 10px;">选择要上架的卡片：</p><div class="card-grid">';
-            html += available.map((card) => `
-                <div class="card ${card.rarity}" onclick="putOnMarket(${card.id})" style="cursor: pointer;">
-                    ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
-                    <div style="font-size: 10px;">[${card.rarity}]</div>
-                    <div class="card-emoji">${card.emoji}</div>
-                    <div class="card-name">${card.name}</div>
-                </div>`).join('');
-            html += '</div>';
-            document.getElementById('marketGrass').innerHTML = html;
-        }
-
-        function putOnMarket(cardId) {
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (!card) return;
-            const basePrice = BASE_PRICES[card.rarity] * (1 + card.level * 0.3);
-            const offer = Math.floor(basePrice * (0.7 + Math.random() * 0.6));
-            gameData.market.push({card, offer});
-            updateMarket(); saveGame();
-        }
-
-        function acceptOffer(index) {
-            const item = gameData.market[index];
-            gameData.coins += item.offer;
-            gameData.cards = gameData.cards.filter(c => c.id !== item.card.id);
-            gameData.market.splice(index, 1);
-            updateUI(); updateMarket(); updateBag(); saveGame();
-            alert(`卖出 ${item.card.name}，获得 ${item.offer}💰！`);
-        }
-
-        function rejectOffer(index) {
-            gameData.market.splice(index, 1);
-            updateMarket(); saveGame();
-        }
-
-        function refreshOffers() {
-            gameData.market.forEach(item => {
-                const basePrice = BASE_PRICES[item.card.rarity] * (1 + item.card.level * 0.3);
-                item.offer = Math.floor(basePrice * (0.7 + Math.random() * 0.6));
+function loadGame() {
+    const saved = localStorage.getItem('petBattleSave_v5');
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            gameData = {...gameData, ...parsed};
+            if (!gameData.market) gameData.market = [];
+            if (!gameData.orchard) gameData.orchard = [];
+            gameData.cards.forEach(card => {
+                if (card.def === undefined) card.def = PETS[card.rarity].find(p => p.name === card.name)?.def || 10;
+                if (card.atkLevel === undefined) card.atkLevel = 0;
+                if (card.defLevel === undefined) card.defLevel = 0;
             });
-            updateMarket(); saveGame();
-        }
+            updateUI();
+        } catch(e) {}
+    }
+}
 
-        // 升级功能
-        function updateUpgrade() {
-            const grid = document.getElementById('upgradeGrid');
-            const upgradable = gameData.cards.filter(c => c.rarity !== 'H8' && c.level < 3);
-            if (upgradable.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><div style="font-size: 40px;">⬆️</div><p style="font-size: 12px;">没有可升级的卡片</p></div>';
-                return;
-            }
-            grid.innerHTML = upgradable.map((card) => {
-                const cost = UPGRADE_COST[card.level + 1];
-                const canAfford = gameData.gems >= cost;
-                return `
-                    <div class="card ${card.rarity}">
-                        ${card.level > 0 ? `<div class="card-level">+${card.level}</div>` : ''}
-                        <div style="font-size: 10px;">[${card.rarity}]</div>
-                        <div class="card-emoji">${card.emoji}</div>
-                        <div class="card-name">${card.name}</div>
-                        <div class="card-stats">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>
-                        <button class="btn upgrade small" onclick="upgradeCard(${card.id})" ${!canAfford ? 'disabled' : ''} style="margin-top: 8px; font-size: 11px;">
-                            ⬆️ +${card.level + 1} (${cost}💎)
-                        </button>
-                    </div>`;
-            }).join('');
-        }
+function saveGame() {
+    localStorage.setItem('petBattleSave_v5', JSON.stringify(gameData));
+    const status = document.getElementById('saveStatus');
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 1500);
+}
 
-        function upgradeCard(cardId) {
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (!card || card.rarity === 'H8' || card.level >= 3) return;
-            const cost = UPGRADE_COST[card.level + 1];
-            if (gameData.gems < cost) { alert('钻石不足！'); return; }
-            gameData.gems -= cost;
-            card.level++;
-            card.hp = Math.floor(card.hp * 1.2);
-            card.atk = Math.floor(card.atk * 1.15);
-            card.maxHp = card.hp;
-            updateUI(); updateUpgrade(); updateBag(); saveGame();
-            alert(`${card.name} 升级成功！+${card.level}`);
-        }
+function updateUI() {
+    document.getElementById('coins').textContent = gameData.coins;
+    document.getElementById('gems').textContent = gameData.gems;
+    document.getElementById('pityH8').textContent = gameData.pityH8;
+    document.getElementById('pitySSR').textContent = gameData.pitySSR;
+}
 
-        // 战斗功能
-        function updateBattlePage() {
-            if (!gameData.team) gameData.team = [];
-            const myFighter = document.getElementById('myFighter');
-            const enemyFighter = document.getElementById('enemyFighter');
-            
-            if (gameData.team.length > 0) {
-                const card = gameData.team[0];
-                myFighter.innerHTML = `<div class="battle-emoji">${card.emoji}</div><div class="battle-name">${card.name}</div><div style="font-size: 10px; color: #888;">❤️${Math.floor(card.hp)} ⚔️${Math.floor(card.atk)}</div>`;
+function generateEnemy() {
+    const rarities = ['N', 'N', 'R', 'R', 'SR', 'SR', 'SSR'];
+    const r = rarities[Math.floor(Math.random() * rarities.length)];
+    const pet = PETS[r][Math.floor(Math.random() * PETS[r].length)];
+    return {...pet, rarity: r, level: 0, atkLevel: 0, defLevel: 0};
+}
+
+function switchPage(page, navElement) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    if (navElement) navElement.classList.add('active');
+    if (page === 'bag') updateBag();
+    if (page === 'team') updateTeamPage();
+    if (page === 'market') { updateMarket(); updateOrchard(); }
+    if (page === 'upgrade') updateUpgrade();
+    if (page === 'battle') {
+        if (!currentEnemy) currentEnemy = generateEnemy();
+        enemyRevealed = false;
+        updateBattlePage();
+    }
+}
+
+function pull() {
+    if (gameData.coins < 100) { alert('金币不足！'); return; }
+    gameData.coins -= 100;
+    let rarity;
+    if (gameData.pityH8 >= 100) { rarity = 'H8'; gameData.pityH8 = 0; }
+    else if (gameData.pitySSR >= 50) { rarity = 'SSR'; gameData.pitySSR = 0; gameData.pityH8++; }
+    else {
+        const rand = Math.random(); let cum = 0;
+        for (let r of RARITY) { cum += r.p; if (rand <= cum) { rarity = r.r; break; } }
+        if (rarity === 'H8') { gameData.pityH8 = 0; gameData.pitySSR = 0; }
+        else if (rarity === 'SSR') { gameData.pityH8++; gameData.pitySSR = 0; }
+        else { gameData.pityH8++; gameData.pitySSR++; }
+    }
+    const pet = PETS[rarity][Math.floor(Math.random() * PETS[rarity].length)];
+    const card = {...pet, rarity, id: Date.now(), maxHp: pet.hp, level: 0, atkLevel: 0, defLevel: 0};
+    gameData.cards.push(card);
+    document.getElementById('gachaResult').innerHTML = '<div class="card ' + rarity + '"><div style="font-size: 11px;">[' + rarity + ']</div><div class="card-emoji">' + pet.emoji + '</div><div class="card-name">' + pet.name + '</div><div class="card-stats">❤️' + pet.hp + ' ⚔️' + pet.atk + ' 🛡️' + pet.def + '</div></div>';
+    updateUI(); saveGame();
+}
+
+function updateBag() {
+    document.getElementById('bagCount').textContent = gameData.cards.length;
+    const grid = document.getElementById('bagGrid');
+    if (gameData.cards.length === 0) { grid.innerHTML = '<div class="empty-state"><div style="font-size: 50px;">🎒</div><p style="font-size: 12px;">背包空空如也</p></div>'; return; }
+    grid.innerHTML = gameData.cards.map((card, i) => {
+        const levelStr = card.level > 0 || card.atkLevel > 0 || card.defLevel > 0 ? '<div class="card-level">+' + card.level + '⚔' + card.atkLevel + '🛡' + card.defLevel + '</div>' : '';
+        return '<div class="card ' + card.rarity + '" onclick="addToTeam(' + i + ')" style="cursor: pointer;">' + levelStr + '<div style="font-size: 10px;">[' + card.rarity + ']</div><div class="card-emoji">' + card.emoji + '</div><div class="card-name">' + card.name + '</div><div class="card-stats">❤️' + Math.floor(card.hp) + ' ⚔️' + Math.floor(card.atk) + ' 🛡️' + Math.floor(card.def) + '</div></div>';
+    }).join('');
+}
+
+function addToTeam(cardIdx) {
+    if (!gameData.team) gameData.team = [];
+    if (gameData.team.length >= 3) { alert('队伍已满！最多3只宠物'); return; }
+    const card = gameData.cards[cardIdx];
+    if (gameData.team.find(c => c.id === card.id)) { alert('该宠物已在队伍中！'); return; }
+    gameData.team.push(card);
+    alert(card.emoji + ' ' + card.name + ' 已加入队伍！');
+    updateTeamPage();
+    saveGame();
+}
+
+function updateTeamPage() {
+    if (!gameData.team) gameData.team = [];
+    const display = document.getElementById('teamDisplay');
+    if (gameData.team.length === 0) { 
+        display.innerHTML = '<div class="empty-state"><div style="font-size: 50px; margin-bottom: 10px;">👥</div><p style="font-size: 12px;">队伍为空，请从背包选择宠物</p></div>'; 
+    } else { 
+        display.innerHTML = gameData.team.map((card, idx) => {
+            const levelStr = card.level > 0 || card.atkLevel > 0 || card.defLevel > 0 ? '<div class="card-level">+' + card.level + '⚔' + card.atkLevel + '🛡' + card.defLevel + '</div>' : '';
+            return '<div class="card ' + card.rarity + '">' + levelStr + '<div style="display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 10px;">[' + card.rarity + ']</span><button onclick="removeFromTeam(' + idx + ')" style="background: #e74c3c; border: none; color: white; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-size: 11px;">移除</button></div><div class="card-emoji">' + card.emoji + '</div><div class="card-name">' + card.name + '</div><div class="card-stats">❤️' + Math.floor(card.hp) + ' ⚔️' + Math.floor(card.atk) + ' 🛡️' + Math.floor(card.def) + '</div></div>';
+        }).join(''); 
+    }
+    const selectGrid = document.getElementById('teamSelectGrid');
+    selectGrid.innerHTML = gameData.cards.map((card, idx) => { 
+        const inTeam = gameData.team.find(c => c.id === card.id); 
+        const levelStr = card.level > 0 || card.atkLevel > 0 || card.defLevel > 0 ? '<div class="card-level">+' + card.level + '⚔' + card.atkLevel + '🛡' + card.defLevel + '</div>' : '';
+        return '<div class="card ' + card.rarity + '" onclick="' + (inTeam ? '' : 'addToTeam(' + idx + ')') + '" style="' + (inTeam ? 'opacity: 0.5;' : 'cursor: pointer;') + '">' + levelStr + '<div style="font-size: 10px;">' + (inTeam ? '✓ 已上阵' : '[' + card.rarity + ']') + '</div><div class="card-emoji">' + card.emoji + '</div><div class="card-name">' + card.name + '</div></div>'; 
+    }).join('');
+}
+
+function removeFromTeam(idx) { gameData.team.splice(idx, 1); updateTeamPage(); saveGame(); }
+
+// ========== 市场功能 + 新功能1 ==========
+function updateMarket() {
+    const grass = document.getElementById('marketGrass');
+    if (gameData.market.length === 0) {
+        grass.innerHTML = '<div class="empty-state"><div style="font-size: 40px;">🌱</div><p style="font-size: 12px;">草地上还没有卡片</p></div>';
+        return;
+    }
+    grass.innerHTML = gameData.market.map((item, i) => {
+        return '<div class="market-card ' + item.card.rarity + '"><div style="font-size: 10px;">[' + item.card.rarity + '] ' + item.card.name + '</div><div style="font-size: 35px;">' + item.card.emoji + '</div><div class="market-offer"><div>买家出价: <span class="offer-price">' + item.offer + '💰</span></div><div class="offer-buttons"><button class="offer-btn accept" onclick="acceptOffer(' + i + ')">✓ 卖出</button><button class="offer-btn reject" onclick="rejectOffer(' + i + ')">✗ 拒绝</button></div></div></div>';
+    }).join('');
+}
+
+function listCardForSale() {
+    const available = gameData.cards.filter(c => !gameData.market.find(m => m.card.id === c.id));
+    if (available.length === 0) { alert('没有可上架的卡片！'); return; }
+    let html = '<p style="color: #888; font-size: 12px; margin-bottom: 10px;">选择要上架的卡片：</p><div class="card-grid">';
+    html += available.map((card) => {
+        const levelStr = card.level > 0 ? '<div class="card-level">+' + card.level + '</div>' : '';
+        return '<div class="card ' + card.rarity + '" onclick="putOnMarket(' + card.id + ')" style="cursor: pointer;">' + levelStr + '<div style="font-size: 10px;">[' + card.rarity + ']</div><div class="card-emoji">' + card.emoji + '</div><div class="card-name">' + card.name + '</div></div>';
+    }).join('');
+    html += '</div>';
+    document.getElementById('marketGrass').innerHTML = html;
+}
+
+function putOnMarket(cardId) {
+    const card = gameData.cards.find(c => c.id === cardId);
+    if (!card) return;
+    const basePrice = BASE_PRICES[card.rarity] * (1 + card.level * 0.3);
+    const offer = Math.floor(basePrice * (0.7 + Math.random() * 0.6));
+    gameData.market.push({card, offer});
+    updateMarket(); saveGame();
+}
+
+// 新功能1: 卖出时随机获得钻石
+function acceptOffer(index) {
+    const item = gameData.market[index];
+    gameData.coins += item.offer;
+    gameData.cards = gameData.cards.filter(c => c.id !== item.card.id);
+    gameData.market.splice(index, 1);
+    // 30%概率获得额外钻石小费
+    if (Math.random() < 0.3) {
+        const tipGems = Math.floor(Math.random() * 10) + 1;
+        gameData.gems += tipGems;
+        showTip('🎁 买家满意！额外获得 ' + tipGems + '💎');
+    }
+    updateUI(); updateMarket(); updateBag(); saveGame();
+    alert('卖出 ' + item.card.name + '，获得 ' + item.offer + '💰！');
+}
+
+function rejectOffer(index) { gameData.market.splice(index, 1); updateMarket(); saveGame(); }
+
+
+function refreshOffers() {
+    gameData.market.forEach(item => {
+        const basePrice = BASE_PRICES[item.card.rarity] * (1 + item.card.level * 0.3);
+        item.offer = Math.floor(basePrice * (0.7 + Math.random() * 0.6));
+    });
+    updateMarket();
+    saveGame();
+}
+
+// 新功能2: 果园系统
+function updateOrchard() {
+    const ground = document.getElementById('orchardGround');
+    if (gameData.orchard.length === 0) {
+        ground.innerHTML = '<div class="empty-state"><div style="font-size: 40px;">🌳</div><p style="font-size: 12px;">果园空空如也</p></div>';
+        return;
+    }
+    ground.innerHTML = gameData.orchard.map((tree, i) => {
+        const ready = tree.ready;
+        const cls = ready ? 'tree fruit-ready' : 'tree';
+        return '<div class="' + cls + '" onclick="harvestFruit(' + i + ')">' + tree.emoji + (ready ? '<div class="growth">可采摘</div>' : '<div class="growth">' + tree.progress + '%</div>') + '</div>';
+    }).join('');
+}
+
+function plantTree() {
+    if (gameData.coins < 50) { alert('金币不足！需要50💰'); return; }
+    gameData.coins -= 50;
+    const treeType = TREES[Math.floor(Math.random() * TREES.length)];
+    gameData.orchard.push({...treeType, id: Date.now(), progress: 0, ready: false, plantTime: Date.now()});
+    updateUI(); updateOrchard(); saveGame();
+}
+
+function growTrees() {
+    gameData.orchard.forEach(tree => {
+        if (!tree.ready) {
+            tree.progress = Math.min(100, tree.progress + 25);
+            if (tree.progress >= 100) tree.ready = true;
+        }
+    });
+}
+setInterval(() => { growTrees(); updateOrchard(); }, 5000);
+
+function harvestFruit(index) {
+    const tree = gameData.orchard[index];
+    if (!tree.ready) { alert('果实还没成熟！'); return; }
+    gameData.orchard.splice(index, 1);
+    showTip('🍎 采摘了 ' + tree.name + '！');
+    updateOrchard(); saveGame();
+}
+
+function visitorVisit() {
+    const readyTrees = gameData.orchard.filter(t => t.ready);
+    if (readyTrees.length === 0) { alert('果园里没有成熟的果实！'); return; }
+    const tree = readyTrees[Math.floor(Math.random() * readyTrees.length)];
+    gameData.orchard = gameData.orchard.filter(x => x.id !== tree.id);
+    const r = Math.random();
+    if (r < 0.4) {
+        const gems = Math.floor(Math.random() * 15) + 5;
+        gameData.gems += gems;
+        showTip('🚶 游客满意！获得 ' + gems + '💎');
+    } else if (r < 0.8) {
+        const coins = Math.floor(Math.random() * 50) + 20;
+        gameData.coins += coins;
+        showTip('🚶 游客满意！获得 ' + coins + '💰');
+    } else {
+        showTip('🚶 游客觉得一般...');
+    }
+    updateUI(); updateOrchard(); saveGame();
+}
+
+// 新功能4: 升级系统（使用钻石）
+function updateUpgrade() {
+    const grid = document.getElementById('upgradeGrid');
+    const upgradable = gameData.cards.filter(c => c.rarity !== 'H8' && (c.level < 3 || c.atkLevel < 3 || c.defLevel < 3));
+    if (upgradable.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div style="font-size: 40px;">⬆️</div><p style="font-size: 12px;">没有可升级的卡片</p></div>';
+        return;
+    }
+    grid.innerHTML = upgradable.map(card => {
+        let btns = '';
+        if (card.level < 3) {
+            const cost = UPGRADE_COST_HP[card.level + 1];
+            btns += '<button class="btn upgrade small" onclick="upgradeCard(' + card.id + ', \'hp\')" ' + (gameData.gems < cost ? 'disabled' : '') + ' style="margin: 2px;">❤️+1 (' + cost + '💎)</button>';
+        }
+        if (card.atkLevel < 3) {
+            const cost = UPGRADE_COST_ATK[card.atkLevel + 1];
+            btns += '<button class="btn btn-atk small" onclick="upgradeCard(' + card.id + ', \'atk\')" ' + (gameData.gems < cost ? 'disabled' : '') + ' style="margin: 2px;">⚔️+1 (' + cost + '💎)</button>';
+        }
+        if (card.defLevel < 3) {
+            const cost = UPGRADE_COST_DEF[card.defLevel + 1];
+            btns += '<button class="btn btn-def small" onclick="upgradeCard(' + card.id + ', \'def\')" ' + (gameData.gems < cost ? 'disabled' : '') + ' style="margin: 2px;">🛡️+1 (' + cost + '💎)</button>';
+        }
+        const levelStr = card.level > 0 || card.atkLevel > 0 || card.defLevel > 0 ? '<div class="card-level">+' + card.level + '⚔' + card.atkLevel + '🛡' + card.defLevel + '</div>' : '';
+        return '<div class="card ' + card.rarity + '">' + levelStr + '<div style="font-size: 10px;">[' + card.rarity + ']</div><div class="card-emoji">' + card.emoji + '</div><div class="card-name">' + card.name + '</div><div class="card-stats">❤️' + Math.floor(card.hp) + ' ⚔️' + Math.floor(card.atk) + ' 🛡️' + Math.floor(card.def) + '</div><div style="margin-top: 8px;">' + btns + '</div></div>';
+    }).join('');
+}
+
+function upgradeCard(cardId, type) {
+    const card = gameData.cards.find(c => c.id === cardId);
+    if (!card || card.rarity === 'H8') return;
+    let cost;
+    if (type === 'hp') {
+        if (card.level >= 3) return;
+        cost = UPGRADE_COST_HP[card.level + 1];
+        if (gameData.gems < cost) { alert('钻石不足！'); return; }
+        gameData.gems -= cost; card.level++; card.hp = Math.floor(card.hp * 1.2); card.maxHp = card.hp;
+    } else if (type === 'atk') {
+        if (card.atkLevel >= 3) return;
+        cost = UPGRADE_COST_ATK[card.atkLevel + 1];
+        if (gameData.gems < cost) { alert('钻石不足！'); return; }
+        gameData.gems -= cost; card.atkLevel++; card.atk = Math.floor(card.atk * 1.15);
+    } else if (type === 'def') {
+        if (card.defLevel >= 3) return;
+        cost = UPGRADE_COST_DEF[card.defLevel + 1];
+        if (gameData.gems < cost) { alert('钻石不足！'); return; }
+        gameData.gems -= cost; card.defLevel++; card.def = Math.floor(card.def * 1.15);
+    }
+    updateUI(); updateUpgrade(); updateBag(); saveGame();
+    alert(card.name + ' 升级成功！');
+}
+
+// 新功能3: 战斗对手隐藏 + 新功能4: 胜利福袋
+function updateBattlePage() {
+    if (!gameData.team) gameData.team = [];
+    const myFighter = document.getElementById('myFighter');
+    const enemyFighter = document.getElementById('enemyFighter');
+    if (gameData.team.length > 0) {
+        const c = gameData.team[0];
+        myFighter.innerHTML = '<div class="battle-emoji-sm">' + c.emoji + '</div><div class="battle-name">' + c.name + '</div><div style="font-size: 10px; color: #888;">❤️' + Math.floor(c.hp) + ' ⚔️' + Math.floor(c.atk) + '</div>';
+    } else {
+        myFighter.innerHTML = '<div class="battle-emoji-sm">❓</div><div class="battle-name">无卡片</div>';
+    }
+    if (!currentEnemy) currentEnemy = generateEnemy();
+    if (enemyRevealed) {
+        enemyFighter.classList.remove('card-hidden');
+        enemyFighter.innerHTML = '<div class="battle-emoji-sm card-reveal">' + currentEnemy.emoji + '</div><div class="battle-name">' + currentEnemy.name + '</div><div style="font-size: 10px; color: #888;">❤️' + currentEnemy.hp + ' ⚔️' + currentEnemy.atk + '</div>';
+    } else {
+        enemyFighter.classList.add('card-hidden');
+        enemyFighter.innerHTML = '<div class="battle-emoji-sm">🎴</div><div class="battle-name">???</div>';
+    }
+    document.getElementById('battleBtn').disabled = gameData.team.length === 0 || isBattling;
+    document.getElementById('battleBtn').textContent = isBattling ? '战斗中...' : '开始战斗';
+    document.getElementById('refreshEnemyBtn').style.display = isBattling ? 'none' : 'inline-block';
+}
+
+function refreshEnemy() {
+    if (isBattling) return;
+    currentEnemy = generateEnemy();
+    enemyRevealed = false;
+    updateBattlePage();
+}
+
+function startBattle() {
+    if (!gameData.team || gameData.team.length === 0 || isBattling) {
+        if (gameData.team.length === 0) alert('请先组建队伍！去背包页面添加卡片到队伍');
+        return;
+    }
+    isBattling = true;
+    enemyRevealed = true;
+    updateBattlePage();
+    const myPet = {...gameData.team[0], currentHp: gameData.team[0].hp};
+    const enemyPet = {...currentEnemy, currentHp: currentEnemy.hp};
+    const log = document.getElementById('battleLog'), rewardArea = document.getElementById('rewardArea');
+    log.innerHTML = ''; rewardArea.innerHTML = '';
+    function addLog(text, type = '') { log.innerHTML += '<div class="log-entry ' + type + '">' + text + '</div>'; log.scrollTop = log.scrollHeight; }
+    addLog('⚔️ 战斗开始！' + myPet.emoji + ' ' + myPet.name + ' VS ' + enemyPet.emoji + ' ' + enemyPet.name);
+    let round = 1;
+    function battleRound() {
+        if (round > 20 || myPet.currentHp <= 0 || enemyPet.currentHp <= 0) {
+            const win = myPet.currentHp > enemyPet.currentHp;
+            if (win) {
+                gameData.battles.win++;
+                const rewardCoins = 100 + Math.floor(Math.random() * 50);
+                gameData.coins += rewardCoins;
+                document.getElementById('coins').textContent = gameData.coins;
+                addLog('🎉 胜利！获得 ' + rewardCoins + '💰', 'win');
+                showLuckyBag();
             } else {
-                myFighter.innerHTML = `<div class="battle-emoji">❓</div><div class="battle-name">无卡片</div>`;
+                gameData.battles.lose++;
+                addLog('💔 失败...', '');
+                rewardArea.innerHTML = '<div style="background: rgba(231,76,60,0.2); border-radius: 10px; padding: 15px; text-align: center; margin-top: 10px;"><div style="font-size: 20px; margin-bottom: 8px;">💔 失败</div><div>获得 30💰 安慰奖</div><div style="font-size: 11px; color: #888; margin-top: 8px;">战绩: ' + gameData.battles.win + '胜 ' + gameData.battles.lose + '负</div></div>';
+                gameData.coins += 30;
+                document.getElementById('coins').textContent = gameData.coins;
             }
-            
-            if (!currentEnemy) currentEnemy = generateEnemy();
-            
-            if (enemyRevealed) {
-                enemyFighter.classList.remove('card-hidden');
-                enemyFighter.innerHTML = `<div class="battle-emoji card-reveal">${currentEnemy.emoji}</div><div class="battle-name">${currentEnemy.name}</div><div style="font-size: 10px; color: #888;">❤️${currentEnemy.hp} ⚔️${currentEnemy.atk}</div>`;
-            } else {
-                enemyFighter.classList.add('card-hidden');
-                enemyFighter.innerHTML = `<div class="battle-emoji">🎴</div><div class="battle-name">???</div>`;
-            }
-            
-            document.getElementById('battleBtn').disabled = gameData.team.length === 0 || isBattling;
-            document.getElementById('battleBtn').textContent = isBattling ? '战斗中...' : '开始战斗';
-            document.getElementById('refreshEnemyBtn').style.display = isBattling ? 'none' : 'inline-block';
-        }
-
-        function refreshEnemy() {
-            if (isBattling) return;
-            currentEnemy = generateEnemy();
-            enemyRevealed = false;
+            isBattling = false;
             updateBattlePage();
+            saveGame();
+            return;
         }
+        const myDamage = Math.floor(myPet.atk * (0.8 + Math.random() * 0.4));
+        enemyPet.currentHp -= myDamage;
+        addLog('第' + round + '回合: ' + myPet.emoji + ' 造成 ' + myDamage + '伤害', 'damage');
+        if (enemyPet.currentHp <= 0) { battleRound(); return; }
+        const enemyDamage = Math.floor(enemyPet.atk * (0.8 + Math.random() * 0.4));
+        myPet.currentHp -= enemyDamage;
+        addLog('第' + round + '回合: ' + enemyPet.emoji + ' 造成 ' + enemyDamage + '伤害', 'damage');
+        round++;
+        setTimeout(battleRound, 600);
+    }
+    setTimeout(battleRound, 800);
+}
 
-        function startBattle() {
-            if (!gameData.team || gameData.team.length === 0 || isBattling) {
-                if (gameData.team.length === 0) alert('请先组建队伍！去背包页面添加卡片到队伍');
-                return;
-            }
-            isBattling = true;
-            
-            // 翻牌 reveal
-            enemyRevealed = true;
-            updateBattlePage();
-            
-            const myPet = {...gameData.team[0], currentHp: gameData.team[0].hp};
-            const enemyPet = {...currentEnemy, currentHp: currentEnemy.hp};
-            
-            const log = document.getElementById('battleLog'), rewardArea = document.getElementById('rewardArea');
-            log.innerHTML = ''; rewardArea.innerHTML = '';
-            
-            function addLog(text, type = '') {
-                log.innerHTML += `<div class="log-entry ${type}">${text}</div>`;
-                log.scrollTop = log.scrollHeight;
-            }
-            
-            addLog(`⚔️ 战斗开始！${myPet.emoji} ${myPet.name} VS ${enemyPet.emoji} ${enemyPet.name}`);
-            
-            let round = 1;
-            function battleRound() {
-                if (round > 20 || myPet.currentHp <= 0 || enemyPet.currentHp <= 0) {
-                    const win = myPet.currentHp > enemyPet.currentHp;
-                    if (win) {
-                        gameData.battles.win++;
-                        const rewardCoins = 100 + Math.floor(Math.random() * 50);
-                        gameData.coins += rewardCoins;
-                        document.getElementById('coins').textContent = gameData.coins;
-                        addLog(`🎉 胜利！获得 ${rewardCoins}💰`, 'win');
-                        rewardArea.innerHTML = `<div class="reward-box"><div style="font-size: 20px; margin-bottom: 8px;">🎉 胜利！</div><div>获得 ${rewardCoins}💰</div><div style="font-size: 11px; color: #888; margin-top: 8px;">战绩: ${gameData.battles.win}胜 ${gameData.battles.lose}负</div></div>`;
-                    } else {
-                        gameData.battles.lose++;
-                        addLog(`💔 失败...`, '');
-                        rewardArea.innerHTML = `<div class="reward-box" style="background: rgba(231,76,60,0.2);"><div style="font-size: 20px; margin-bottom: 8px;">💔 失败</div><div>获得 30💰 安慰奖</div><div style="font-size: 11px; color: #888; margin-top: 8px;">战绩: ${gameData.battles.win}胜 ${gameData.battles.lose}负</div></div>`;
-                        gameData.coins += 30;
-                        document.getElementById('coins').textContent = gameData.coins;
-                    }
-                    isBattling = false;
-                    updateBattlePage();
-                    saveGame();
-                    return;
-                }
-                
-                const myDamage = Math.floor(myPet.atk * (0.8 + Math.random() * 0.4));
-                enemyPet.currentHp -= myDamage;
-                addLog(`第${round}回合: ${myPet.emoji} 造成 ${myDamage}伤害`, 'damage');
-                
-                if (enemyPet.currentHp <= 0) { battleRound(); return; }
-                
-                const enemyDamage = Math.floor(enemyPet.atk * (0.8 + Math.random() * 0.4));
-                myPet.currentHp -= enemyDamage;
-                addLog(`第${round}回合: ${enemyPet.emoji} 造成 ${enemyDamage}伤害`, 'damage');
-                
-                round++;
-                setTimeout(battleRound, 600);
-            }
-            
-            setTimeout(battleRound, 800);
-        }
-        
-        window.onload = loadGame;
-    </script>
+function showLuckyBag() {
+    const rewardArea = document.getElementById('rewardArea');
+    rewardArea.innerHTML = '<div class="lucky-bag"><div class="lucky-bag-title">🎁 战斗福袋</div><div>选择一项奖励：</div><div class="bag-reward"><button class="bag-btn" onclick="openBag(\'atk\')">⚔️ 攻击+5</button><button class="bag-btn" onclick="openBag(\'def\')">🛡️ 防御+3</button></div></div>';
+}
+
+function openBag(type) {
+    if (!gameData.team || gameData.team.length === 0) return;
+    const card = gameData.team[0];
+    if (type === 'atk') { card.atk += 5; showTip('⚔️ ' + card.name + ' 攻击力+5！'); }
+    else if (type === 'def') { card.def += 3; showTip('🛡️ ' + card.name + ' 防御力+3！'); }
+    document.getElementById('rewardArea').innerHTML = '<div style="background: rgba(46,204,113,0.2); border-radius: 10px; padding: 15px; text-align: center; margin-top: 10px;"><div style="font-size: 20px; margin-bottom: 8px;">🎉 获得福袋奖励！</div><div style="font-size: 11px; color: #888; margin-top: 8px;">战绩: ' + gameData.battles.win + '胜 ' + gameData.battles.lose + '负</div></div>';
+    updateBattlePage();
+    saveGame();
+}
+
+function showTip(message) {
+    const div = document.createElement('div');
+    div.className = 'tip-popup';
+    div.innerHTML = '<div style="font-size: 24px; margin-bottom: 10px;">' + message + '</div>';
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 1500);
+}
+
+window.onload = loadGame;
+</script>
 </body>
 </html>
