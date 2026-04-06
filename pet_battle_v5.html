@@ -126,6 +126,99 @@
         .collection-reward { background: rgba(243, 156, 18, 0.3); border-radius: 10px; padding: 12px; text-align: center; margin-top: 15px; }
         .collection-progress { background: rgba(0,0,0,0.3); border-radius: 10px; height: 6px; overflow: hidden; margin: 8px 0; }
         .collection-progress-fill { height: 100%; background: linear-gradient(90deg, #27ae60, #2ecc71); transition: width 0.5s; }
+        /* 进化系统样式 */
+        .evolve-area { background: linear-gradient(180deg, rgba(231, 76, 60, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .evolve-info { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 15px; text-align: center; }
+        .evolve-rule { font-size: 12px; color: #888; margin-top: 8px; }
+        .evolve-target { display: flex; justify-content: center; gap: 20px; align-items: center; margin: 20px 0; }
+        .evolve-arrow { font-size: 30px; color: #f39c12; }
+        .evolve-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .evolve-card { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; position: relative; border: 2px solid transparent; }
+        .evolve-card:hover { background: rgba(255,255,255,0.15); }
+        .evolve-card.selected { border-color: #f39c12; background: rgba(243, 156, 18, 0.2); }
+        .evolve-card.locked { opacity: 0.5; cursor: not-allowed; }
+        .evolve-count { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+        .evolve-result { background: rgba(46, 204, 113, 0.2); border-radius: 10px; padding: 15px; text-align: center; margin-top: 15px; }
+        .evolve-success { animation: evolveSuccess 1s ease; }
+        @keyframes evolveSuccess { 0% { transform: scale(0.5); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+        /* 装备系统样式 */
+        .equip-area { background: linear-gradient(180deg, rgba(52, 152, 219, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .equip-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .equip-tab { flex: 1; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .equip-tab.active { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .equip-inventory { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .equip-item { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; text-align: center; cursor: pointer; position: relative; }
+        .equip-item:hover { background: rgba(255,255,255,0.15); }
+        .equip-item-equipped { border: 2px solid #f1c40f; }
+        .equip-icon { font-size: 24px; }
+        .equip-name { font-size: 10px; margin-top: 4px; }
+        .equip-stat { font-size: 9px; color: #888; }
+        .equip-rarity-N { border-color: #95a5a6; }
+        .equip-rarity-R { border-color: #3498db; }
+        .equip-rarity-SR { border-color: #9b59b6; }
+        .equip-rarity-SSR { border-color: #f1c40f; }
+        .equip-equipped-mark { position: absolute; top: -3px; right: -3px; font-size: 12px; background: #f1c40f; border-radius: 50%; padding: 2px; }
+        .equip-detail { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .equip-detail-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; }
+        .equip-detail-stats { font-size: 12px; color: #aaa; }
+        .forge-area { background: linear-gradient(180deg, rgba(155, 89, 182, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .forge-materials { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+        .forge-material { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; text-align: center; }
+        .forge-material-count { font-size: 11px; color: #888; margin-top: 4px; }
+        .forge-result-preview { background: rgba(243, 156, 18, 0.2); border-radius: 10px; padding: 15px; text-align: center; margin: 15px 0; }
+        /* 每日副本样式 */
+        .dungeon-area { background: linear-gradient(180deg, rgba(231, 76, 60, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .dungeon-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .dungeon-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .dungeon-item:hover { transform: translateY(-3px); background: rgba(255,255,255,0.15); }
+        .dungeon-item.disabled { opacity: 0.5; cursor: not-allowed; }
+        .dungeon-icon { font-size: 32px; margin-bottom: 5px; }
+        .dungeon-name { font-size: 12px; font-weight: bold; }
+        .dungeon-desc { font-size: 10px; color: #888; margin-top: 3px; }
+        .dungeon-count { font-size: 9px; color: #f39c12; margin-top: 5px; }
+        /* 任务系统样式 */
+        .quest-area { background: linear-gradient(180deg, rgba(39, 174, 96, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .quest-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+        .quest-tab { flex: 1; background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .quest-tab.active { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .quest-list { display: flex; flex-direction: column; gap: 8px; }
+        .quest-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .quest-item.completed { opacity: 0.6; }
+        .quest-info { flex: 1; }
+        .quest-title { font-size: 12px; font-weight: bold; }
+        .quest-desc { font-size: 10px; color: #888; margin-top: 2px; }
+        .quest-reward { font-size: 10px; color: #f39c12; margin-top: 2px; }
+        .quest-progress { font-size: 10px; color: #3498db; margin-top: 2px; }
+        .quest-btn { background: #f39c12; border: none; color: white; padding: 6px 12px; border-radius: 15px; font-size: 11px; cursor: pointer; }
+        .quest-btn:disabled { background: #666; }
+        .quest-btn.claimed { background: #27ae60; }
+        /* 签到系统样式 */
+        .checkin-area { background: linear-gradient(180deg, rgba(155, 89, 182, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .checkin-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
+        .checkin-day { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 2px; text-align: center; font-size: 10px; }
+        .checkin-day.today { background: rgba(243, 156, 18, 0.3); border: 2px solid #f39c12; }
+        .checkin-day.checked { background: rgba(46, 204, 113, 0.3); }
+        .checkin-day-num { font-size: 9px; color: #888; }
+        .checkin-day-icon { font-size: 16px; margin: 2px 0; }
+        .checkin-btn { background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%); border: none; color: white; padding: 12px 30px; border-radius: 25px; font-size: 14px; font-weight: bold; cursor: pointer; margin: 15px auto; display: block; }
+        .checkin-btn:disabled { background: #666; }
+        .checkin-streak { text-align: center; font-size: 14px; color: #f39c12; margin-bottom: 10px; }
+        /* 离线收益样式 */
+        .offline-reward { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.95); border-radius: 20px; padding: 30px; text-align: center; z-index: 5000; max-width: 300px; width: 90%; }
+        .offline-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #f39c12; }
+        .offline-time { font-size: 14px; color: #888; margin-bottom: 15px; }
+        .offline-rewards { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        .offline-reward-item { font-size: 14px; margin: 5px 0; }
+        /* 成就系统样式 */
+        .achievement-area { background: linear-gradient(180deg, rgba(241, 196, 15, 0.2) 0%, rgba(44, 62, 80, 0.5) 100%); border-radius: 15px; padding: 15px; margin-bottom: 15px; }
+        .achievement-list { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+        .achievement-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+        .achievement-item.unlocked { border: 2px solid #f1c40f; }
+        .achievement-icon { font-size: 28px; }
+        .achievement-info { flex: 1; }
+        .achievement-title { font-size: 12px; font-weight: bold; }
+        .achievement-desc { font-size: 10px; color: #888; }
+        .achievement-reward { font-size: 10px; color: #f39c12; }
     </style>
 </head>
 <body>
@@ -222,6 +315,10 @@
             </div>
             <div class="page" id="page-tower">
                 <div class="page-title"><h1>🏰 无尽之塔</h1></div>
+                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
+                    <button class="btn small" onclick="switchPage('battle', null)">⚔️ 普通竞技场</button>
+                    <button class="btn small" onclick="switchPage('collection', null)">📚 图鉴</button>
+                </div>
                 <div class="tower-area">
                     <div class="tower-info">
                         <div class="tower-level">
@@ -280,14 +377,149 @@
                     <div class="collection-grid" id="collectionGrid"></div>
                 </div>
             </div>
+            <div class="page" id="page-evolve">
+                <div class="page-title"><h1>✨ 宠物进化</h1></div>
+                <div class="evolve-area">
+                    <div class="evolve-info">
+                        <div style="font-size: 16px; font-weight: bold; color: #f39c12;">进化规则</div>
+                        <div class="evolve-rule">3只相同稀有度、相同宠物的卡牌可以进化为更高稀有度<br>H8级别宠物无法进化</div>
+                    </div>
+                    <div id="evolveSelectArea">
+                        <p style="color: #888; font-size: 12px; margin-bottom: 10px;">选择要进化的宠物（需要3只相同）：</p>
+                        <div class="evolve-select" id="evolveGrid"></div>
+                    </div>
+                    <div class="evolve-target" id="evolveTarget" style="display: none;">
+                        <div id="evolveSourceDisplay"></div>
+                        <div class="evolve-arrow">➜</div>
+                        <div id="evolveResultDisplay"></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button class="btn" id="evolveBtn" onclick="performEvolve()" disabled>选择3只宠物进化</button>
+                    </div>
+                    <div id="evolveResultArea"></div>
+                </div>
+            </div>
+            <div class="page" id="page-equip">
+                <div class="page-title"><h1>🗡️ 装备系统</h1></div>
+                <div class="equip-tabs">
+                    <button class="equip-tab active" onclick="switchEquipTab('inventory')">📦 装备背包</button>
+                    <button class="equip-tab" onclick="switchEquipTab('equip')">⚔️ 穿戴装备</button>
+                    <button class="equip-tab" onclick="switchEquipTab('forge')">🔨 锻造</button>
+                </div>
+                <div id="equipContent">
+                    <div class="equip-area" id="equipInventoryArea">
+                        <p style="color: #888; font-size: 12px; margin-bottom: 10px;">我的装备（点击装备查看详情）：</p>
+                        <div class="equip-inventory" id="equipGrid"></div>
+                    </div>
+                    <div class="equip-area" id="equipEquipArea" style="display: none;">
+                        <p style="color: #888; font-size: 12px; margin-bottom: 10px;">选择宠物和装备进行穿戴：</p>
+                        <div style="margin-bottom: 15px;">
+                            <select id="equipPetSelect" onchange="updateEquipPreview()" style="width: 100%; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; border: none;">
+                                <option value="">选择宠物...</option>
+                            </select>
+                        </div>
+                        <div id="equipPreview"></div>
+                    </div>
+                    <div class="forge-area" id="equipForgeArea" style="display: none;">
+                        <p style="color: #888; font-size: 12px; margin-bottom: 10px;">锻造装备（消耗材料）：</p>
+                        <div class="forge-materials">
+                            <div class="forge-material">
+                                <div style="font-size: 24px;">🪨</div>
+                                <div class="forge-material-count">精铁: <span id="materialIron">0</span></div>
+                            </div>
+                            <div class="forge-material">
+                                <div style="font-size: 24px;">💎</div>
+                                <div class="forge-material-count">宝石: <span id="materialGem">0</span></div>
+                            </div>
+                            <div class="forge-material">
+                                <div style="font-size: 24px;">🔮</div>
+                                <div class="forge-material-count">水晶: <span id="materialCrystal">0</span></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <button class="btn" onclick="forgeEquipment('weapon')">🗡️ 锻造武器 (20🪨)</button>
+                            <button class="btn" onclick="forgeEquipment('armor')" style="margin-top: 8px;">🛡️ 锻造防具 (20🪨)</button>
+                            <button class="btn" onclick="forgeEquipment('accessory')" style="margin-top: 8px;">💍 锻造饰品 (10💎)</button>
+                        </div>
+                        <div class="forge-result-preview" id="forgeResult" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page" id="page-quest">
+                <div class="page-title"><h1>📋 任务中心</h1></div>
+                <div class="quest-tabs">
+                    <button class="quest-tab active" onclick="switchQuestTab('daily', this)">📅 每日任务</button>
+                    <button class="quest-tab" onclick="switchQuestTab('weekly', this)">📆 每周任务</button>
+                    <button class="quest-tab" onclick="switchQuestTab('achievement', this)">🏆 成就</button>
+                </div>
+                <div id="questContent">
+                    <div class="quest-area" id="dailyQuestArea">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 12px; color: #888;">每日0点重置</span>
+                            <span style="font-size: 12px; color: #f39c12;">完成度: <span id="dailyProgress">0/0</span></span>
+                        </div>
+                        <div class="quest-list" id="dailyQuestList"></div>
+                    </div>
+                    <div class="quest-area" id="weeklyQuestArea" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 12px; color: #888;">每周一0点重置</span>
+                            <span style="font-size: 12px; color: #f39c12;">完成度: <span id="weeklyProgress">0/0</span></span>
+                        </div>
+                        <div class="quest-list" id="weeklyQuestList"></div>
+                    </div>
+                    <div class="achievement-area" id="achievementArea" style="display: none;">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <span style="font-size: 12px; color: #f39c12;">成就点数: <span id="achievementPoints">0</span></span>
+                        </div>
+                        <div class="achievement-list" id="achievementList"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page" id="page-dungeon">
+                <div class="page-title"><h1>⚔️ 每日副本</h1></div>
+                <div class="dungeon-area">
+                    <p style="color: #888; font-size: 12px; margin-bottom: 10px;">每日可挑战3次，获得丰厚奖励</p>
+                    <div class="dungeon-list">
+                        <div class="dungeon-item" onclick="startDungeon('gold')">
+                            <div class="dungeon-icon">💰</div>
+                            <div class="dungeon-name">金币副本</div>
+                            <div class="dungeon-desc">大量金币</div>
+                            <div class="dungeon-count">剩余: <span id="goldDungeonCount">3</span>/3</div>
+                        </div>
+                        <div class="dungeon-item" onclick="startDungeon('exp')">
+                            <div class="dungeon-icon">⭐</div>
+                            <div class="dungeon-name">经验副本</div>
+                            <div class="dungeon-desc">升级材料</div>
+                            <div class="dungeon-count">剩余: <span id="expDungeonCount">3</span>/3</div>
+                        </div>
+                        <div class="dungeon-item" onclick="startDungeon('material')">
+                            <div class="dungeon-icon">🪨</div>
+                            <div class="dungeon-name">材料副本</div>
+                            <div class="dungeon-desc">锻造材料</div>
+                            <div class="dungeon-count">剩余: <span id="materialDungeonCount">3</span>/3</div>
+                        </div>
+                    </div>
+                    <div class="battle-log" id="dungeonBattleLog" style="margin-top: 15px; display: none;"></div>
+                    <div id="dungeonRewardArea"></div>
+                </div>
+            </div>
+            <div class="page" id="page-checkin">
+                <div class="page-title"><h1>📅 每日签到</h1></div>
+                <div class="checkin-area">
+                    <div class="checkin-streak">🔥 连续签到 <span id="checkinStreak">0</span> 天</div>
+                    <div class="checkin-calendar" id="checkinCalendar"></div>
+                    <button class="checkin-btn" id="checkinBtn" onclick="doCheckin()">立即签到</button>
+                    <div id="checkinReward" style="margin-top: 10px;"></div>
+                </div>
+            </div>
         </div>
         <div class="nav-bar">
             <div class="nav-item active" onclick="switchPage('gacha', this)"><span class="nav-icon">🎰</span><span class="nav-text">召唤</span></div>
             <div class="nav-item" onclick="switchPage('bag', this)"><span class="nav-icon">🎒</span><span class="nav-text">背包</span></div>
-            <div class="nav-item" onclick="switchPage('team', this)"><span class="nav-icon">👥</span><span class="nav-text">队伍</span></div>
+            <div class="nav-item" onclick="switchPage('quest', this)"><span class="nav-icon">📋</span><span class="nav-text">任务</span></div>
+            <div class="nav-item" onclick="switchPage('dungeon', this)"><span class="nav-icon">⚔️</span><span class="nav-text">副本</span></div>
+            <div class="nav-item" onclick="switchPage('checkin', this)"><span class="nav-icon">📅</span><span class="nav-text">签到</span></div>
             <div class="nav-item" onclick="switchPage('tower', this)"><span class="nav-icon">🏰</span><span class="nav-text">爬塔</span></div>
-            <div class="nav-item" onclick="switchPage('collection', this)"><span class="nav-icon">📚</span><span class="nav-text">图鉴</span></div>
-            <div class="nav-item" onclick="switchPage('battle', this)"><span class="nav-icon">⚔️</span><span class="nav-text">战斗</span></div>
         </div>
     </div>
     <script>
@@ -372,7 +604,9 @@ let gameData = {
     coins: 5000, gems: 1000, cards: [], market: [], orchard: [],
     pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0},
     towerLevel: 1, towerHighest: 1, towerRewardsClaimed: [],
-    collectionClaimed: [], collectionOwned: [] // 记录所有曾经获得过的宠物
+    collectionClaimed: [], collectionOwned: [],
+    equipments: [], // 装备背包
+    materials: { iron: 0, gem: 0, crystal: 0 } // 锻造材料
 };
 let currentEnemyTeam = null, isBattling = false, enemyRevealed = false;
 
@@ -384,7 +618,11 @@ function resetGame() {
             coins: 5000, gems: 1000, cards: [], market: [], orchard: [],
             pityH8: 0, pitySSR: 0, battles: {win: 0, lose: 0},
             towerLevel: 1, towerHighest: 1, towerRewardsClaimed: [],
-            collectionClaimed: [], collectionOwned: []
+            collectionClaimed: [], collectionOwned: [],
+            equipments: [], materials: { iron: 0, gem: 0, crystal: 0 },
+            lastLoginTime: null, checkinStreak: 0, lastCheckinDate: null, checkinDays: [],
+            dailyQuests: [], weeklyQuests: [], achievements: [], achievementPoints: 0,
+            dungeonCounts: { gold: 3, exp: 3, material: 3 }, lastDungeonReset: null
         };
         currentEnemyTeam = null;
         isBattling = false;
@@ -413,8 +651,26 @@ function loadGame() {
             if (!gameData.towerRewardsClaimed) gameData.towerRewardsClaimed = [];
             if (!gameData.collectionClaimed) gameData.collectionClaimed = [];
             if (!gameData.collectionOwned) gameData.collectionOwned = [];
+            if (!gameData.equipments) gameData.equipments = [];
+            if (!gameData.materials) gameData.materials = { iron: 0, gem: 0, crystal: 0 };
+            // 第四阶段数据初始化
+            if (gameData.lastLoginTime === undefined) gameData.lastLoginTime = null;
+            if (gameData.checkinStreak === undefined) gameData.checkinStreak = 0;
+            if (gameData.lastCheckinDate === undefined) gameData.lastCheckinDate = null;
+            if (!gameData.checkinDays) gameData.checkinDays = [];
+            if (!gameData.dailyQuests) gameData.dailyQuests = [];
+            if (!gameData.weeklyQuests) gameData.weeklyQuests = [];
+            if (!gameData.achievements) gameData.achievements = [];
+            if (gameData.achievementPoints === undefined) gameData.achievementPoints = 0;
+            if (!gameData.dungeonCounts) gameData.dungeonCounts = { gold: 3, exp: 3, material: 3 };
+            if (gameData.lastDungeonReset === undefined) gameData.lastDungeonReset = null;
             if (gameData.towerLevel === undefined) gameData.towerLevel = 1;
             if (gameData.towerHighest === undefined) gameData.towerHighest = 1;
+            // 检查每日/每周重置
+            checkDailyReset();
+            checkWeeklyReset();
+            // 计算离线收益
+            calculateOfflineRewards();
             gameData.cards.forEach(card => {
                 if (card.def === undefined) card.def = PETS[card.rarity].find(p => p.name === card.name)?.def || 10;
                 if (card.atkLevel === undefined) card.atkLevel = 0;
@@ -479,6 +735,11 @@ function switchPage(page, navElement) {
     }
     if (page === 'tower') updateTowerPage();
     if (page === 'collection') updateCollectionPage();
+    if (page === 'evolve') updateEvolvePage();
+    if (page === 'equip') updateEquipPage();
+    if (page === 'quest') updateQuestPage();
+    if (page === 'dungeon') updateDungeonPage();
+    if (page === 'checkin') updateCheckinPage();
 }
 
 // ========== 召唤系统 ==========
@@ -496,7 +757,7 @@ function pull() {
         else { gameData.pityH8++; gameData.pitySSR++; }
     }
     const pet = PETS[rarity][Math.floor(Math.random() * PETS[rarity].length)];
-    const card = {...pet, rarity, id: Date.now(), maxHp: pet.hp, level: 0, atkLevel: 0, defLevel: 0};
+    const card = {...pet, rarity, id: Date.now() + Math.floor(Math.random() * 1000), maxHp: pet.hp, level: 0, atkLevel: 0, defLevel: 0};
     gameData.cards.push(card);
     // 记录到图鉴
     const collectionKey = rarity + '_' + pet.name;
@@ -506,6 +767,7 @@ function pull() {
     const skillInfo = card.skill ? `<div style="font-size: 10px; color: #9b59b6; margin-top: 3px;">${SKILLS[card.skill].icon} ${SKILLS[card.skill].name}</div>` : '';
     document.getElementById('gachaResult').innerHTML = `<div class="card ${rarity}"><div class="element-icon">${getElementIcon(card.element)}</div><div style="font-size: 11px;">[${rarity}]</div><div class="card-emoji">${pet.emoji}</div><div class="card-name">${pet.name}</div><div class="card-stats">❤️${pet.hp} ⚔️${pet.atk} 🛡️${pet.def}</div>${skillInfo}</div>`;
     updateUI(); saveGame();
+    updateQuestProgress('pull');
 }
 
 // ========== 背包系统 ==========
@@ -596,6 +858,12 @@ function putOnMarket(cardId) {
 
 function acceptOffer(index) {
     const item = gameData.market[index];
+    // 退还装备
+    gameData.equipments.forEach(eq => {
+        if (eq.equippedOn === item.card.id) {
+            eq.equippedOn = null;
+        }
+    });
     gameData.coins += item.offer;
     gameData.cards = gameData.cards.filter(c => c.id !== item.card.id);
     gameData.market.splice(index, 1);
@@ -605,6 +873,7 @@ function acceptOffer(index) {
         showTip('🎁 买家满意！额外获得 ' + tipGems + '💎');
     }
     updateUI(); updateMarket(); updateBag(); saveGame();
+    updateQuestProgress('sell');
     alert('卖出 ' + item.card.name + '，获得 ' + item.offer + '💰！');
 }
 
@@ -637,7 +906,7 @@ function plantTree() {
     if (gameData.coins < 50) { alert('金币不足！需要50💰'); return; }
     gameData.coins -= 50;
     const treeType = TREES[Math.floor(Math.random() * TREES.length)];
-    gameData.orchard.push({...treeType, id: Date.now(), progress: 0, ready: false, plantTime: Date.now()});
+    gameData.orchard.push({...treeType, id: Date.now() + Math.floor(Math.random() * 1000), progress: 0, ready: false, plantTime: Date.now()});
     updateUI(); updateOrchard(); saveGame();
 }
 
@@ -740,7 +1009,7 @@ function generateEnemyTeam() {
     for (let i = 0; i < teamSize; i++) {
         const r = rarities[Math.floor(Math.random() * rarities.length)];
         const pet = PETS[r][Math.floor(Math.random() * PETS[r].length)];
-        team.push({...pet, rarity: r, level: 0, atkLevel: 0, defLevel: 0, id: Date.now() + i});
+        team.push({...pet, rarity: r, level: 0, atkLevel: 0, defLevel: 0, id: Date.now() + i + Math.floor(Math.random() * 100)});
     }
     return team;
 }
@@ -886,6 +1155,7 @@ function startBattle() {
                 gameData.coins += rewardCoins;
                 document.getElementById('coins').textContent = gameData.coins;
                 addLog(`🎉 胜利！(${myAlive} : ${enemyAlive}) 获得 ${rewardCoins}💰`, 'win');
+                addMaterialReward();
                 isBattling = false;
                 updateBattlePage();
                 showLuckyBag();
@@ -899,6 +1169,7 @@ function startBattle() {
                 updateBattlePage();
             }
             saveGame();
+            updateQuestProgress('battle');
             return;
         }
         
@@ -1121,7 +1392,7 @@ function generateTowerEnemyTeam(level) {
             level: 0, 
             atkLevel: 0, 
             defLevel: 0, 
-            id: Date.now() + i,
+            id: Date.now() + i + Math.floor(Math.random() * 100),
             hp: Math.floor(pet.hp * levelBonus),
             atk: Math.floor(pet.atk * levelBonus),
             def: Math.floor(pet.def * levelBonus)
@@ -1404,6 +1675,11 @@ function startTowerBattle() {
             // 进入下一层
             gameData.towerLevel++;
             
+            // 额外材料奖励（高层更多）
+            gameData.materials.iron += Math.floor(Math.random() * 3) + 1 + Math.floor(gameData.towerLevel / 10);
+            if (Math.random() < 0.3) gameData.materials.gem += 1;
+            if (Math.random() < 0.1 && gameData.towerLevel > 20) gameData.materials.crystal += 1;
+            
             addLog(`🎉 挑战成功！获得 💰${reward.coins} 💎${reward.gems}`, 'win');
             
             // 检查里程碑奖励
@@ -1428,6 +1704,7 @@ function startTowerBattle() {
         updateUI();
         updateTowerPage();
         saveGame();
+        updateQuestProgress('tower');
     }
     
     setTimeout(battleRound, 500);
@@ -1526,6 +1803,981 @@ function claimCollectionReward(milestone) {
     updateCollectionPage();
     saveGame();
     showTip(`📚 领取了图鉴收集奖励！+${reward}💎`);
+}
+
+// ========== 进化系统 ==========
+const EVOLVE_RULES = {
+    'N': 'R',
+    'R': 'SR',
+    'SR': 'SSR',
+    'SSR': 'H8'
+};
+
+let selectedForEvolve = []; // 存储选中的宠物ID
+
+function updateEvolvePage() {
+    selectedForEvolve = [];
+    document.getElementById('evolveTarget').style.display = 'none';
+    document.getElementById('evolveResultArea').innerHTML = '';
+    updateEvolveButton();
+    
+    // 按稀有度和宠物名称分组
+    const groups = {};
+    gameData.cards.forEach(card => {
+        if (card.rarity === 'H8') return; // H8不能进化
+        const key = card.rarity + '_' + card.name;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(card);
+    });
+    
+    const grid = document.getElementById('evolveGrid');
+    let html = '';
+    
+    for (let key in groups) {
+        const cards = groups[key];
+        if (cards.length < 3) continue; // 不足3只不能显示
+        
+        const card = cards[0];
+        const count = cards.length;
+        const canEvolveCount = Math.floor(count / 3);
+        
+        html += `<div class="evolve-card" onclick="selectForEvolve('${key}', ${cards.length})" id="evolve-card-${key}">
+            <span class="evolve-count">${count}</span>
+            <div style="font-size: 28px;">${card.emoji}</div>
+            <div style="font-size: 11px;">${card.name}</div>
+            <div style="font-size: 10px; color: #888;">[${card.rarity}] ${count}/3</div>
+        </div>`;
+    }
+    
+    if (html === '') {
+        html = '<div class="empty-state" style="grid-column: span 3;"><div style="font-size: 40px;">✨</div><p style="font-size: 12px;">没有满足进化条件的宠物<br>需要3只相同稀有度且相同的宠物</p></div>';
+    }
+    
+    grid.innerHTML = html;
+}
+
+function selectForEvolve(key, count) {
+    const rarity = key.split('_')[0];
+    const name = key.split('_')[1];
+    
+    // 取消之前的选择
+    document.querySelectorAll('.evolve-card').forEach(el => el.classList.remove('selected'));
+    document.getElementById('evolve-card-' + key).classList.add('selected');
+    
+    // 获取该类别的所有宠物
+    selectedForEvolve = [];
+    for (let card of gameData.cards) {
+        if (card.rarity === rarity && card.name === name) {
+            selectedForEvolve.push(card.id);
+            if (selectedForEvolve.length >= 3) break;
+        }
+    }
+    
+    // 显示进化预览
+    const pet = gameData.cards.find(c => c.id === selectedForEvolve[0]);
+    const nextRarity = EVOLVE_RULES[rarity];
+    const targetPets = PETS[nextRarity];
+    const targetPet = targetPets[Math.floor(Math.random() * targetPets.length)];
+    
+    document.getElementById('evolveSourceDisplay').innerHTML = `
+        <div class="card ${rarity}" style="width: 100px; margin: 0 auto;">
+            <div class="element-icon">${getElementIcon(pet.element)}</div>
+            <div style="font-size: 10px;">[${rarity}]</div>
+            <div class="card-emoji">${pet.emoji}</div>
+            <div class="card-name">${pet.name}</div>
+            <div style="font-size: 9px; color: #888;">×3</div>
+        </div>
+    `;
+    
+    document.getElementById('evolveResultDisplay').innerHTML = `
+        <div class="card ${nextRarity}" style="width: 100px; margin: 0 auto; opacity: 0.7;">
+            <div class="element-icon">${getElementIcon(targetPet.element)}</div>
+            <div style="font-size: 10px;">[${nextRarity}]</div>
+            <div class="card-emoji">${targetPet.emoji}</div>
+            <div class="card-name">${targetPet.name}</div>
+            <div style="font-size: 9px; color: #888;">?</div>
+        </div>
+    `;
+    
+    document.getElementById('evolveTarget').style.display = 'flex';
+    updateEvolveButton();
+}
+
+function updateEvolveButton() {
+    const btn = document.getElementById('evolveBtn');
+    if (selectedForEvolve.length === 3) {
+        btn.disabled = false;
+        btn.textContent = '✨ 开始进化';
+    } else {
+        btn.disabled = true;
+        btn.textContent = '选择3只宠物进化';
+    }
+}
+
+function performEvolve() {
+    if (selectedForEvolve.length !== 3) return;
+    
+    const sourceCards = selectedForEvolve.map(id => gameData.cards.find(c => c.id === id));
+    const sourceRarity = sourceCards[0].rarity;
+    const sourceName = sourceCards[0].name;
+    const nextRarity = EVOLVE_RULES[sourceRarity];
+    
+    // 退还装备
+    selectedForEvolve.forEach(id => {
+        gameData.equipments.forEach(eq => {
+            if (eq.equippedOn === id) {
+                eq.equippedOn = null;
+            }
+        });
+    });
+    
+    // 从背包移除3只源宠物
+    gameData.cards = gameData.cards.filter(c => !selectedForEvolve.includes(c.id));
+    
+    // 从队伍中移除（如果有）
+    if (gameData.team) {
+        gameData.team = gameData.team.filter(c => !selectedForEvolve.includes(c.id));
+    }
+    
+    // 生成新宠物（继承最高等级）
+    const maxLevel = Math.max(...sourceCards.map(c => c.level));
+    const maxAtkLevel = Math.max(...sourceCards.map(c => c.atkLevel));
+    const maxDefLevel = Math.max(...sourceCards.map(c => c.defLevel));
+    
+    const targetPets = PETS[nextRarity];
+    const targetPet = targetPets[Math.floor(Math.random() * targetPets.length)];
+    
+    const newCard = {
+        ...targetPet,
+        rarity: nextRarity,
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        maxHp: Math.floor(targetPet.hp * Math.pow(1.2, maxLevel)),
+        level: maxLevel,
+        atkLevel: maxAtkLevel,
+        defLevel: maxDefLevel,
+        hp: Math.floor(targetPet.hp * Math.pow(1.2, maxLevel)),
+        atk: Math.floor(targetPet.atk * Math.pow(1.15, maxAtkLevel)),
+        def: Math.floor(targetPet.def * Math.pow(1.15, maxDefLevel))
+    };
+    
+    gameData.cards.push(newCard);
+    
+    // 记录到图鉴
+    const collectionKey = nextRarity + '_' + targetPet.name;
+    if (!gameData.collectionOwned.includes(collectionKey)) {
+        gameData.collectionOwned.push(collectionKey);
+    }
+    
+    // 显示结果
+    document.getElementById('evolveResultArea').innerHTML = `
+        <div class="evolve-result evolve-success">
+            <div style="font-size: 20px; margin-bottom: 10px;">✨ 进化成功！</div>
+            <div class="card ${nextRarity}" style="width: 120px; margin: 0 auto;">
+                <div class="element-icon">${getElementIcon(newCard.element)}</div>
+                <div style="font-size: 10px;">[${nextRarity}]</div>
+                <div class="card-emoji">${newCard.emoji}</div>
+                <div class="card-name">${newCard.name}</div>
+                <div class="card-stats">❤️${newCard.hp} ⚔️${newCard.atk} 🛡️${newCard.def}</div>
+            </div>
+        </div>
+    `;
+    
+    selectedForEvolve = [];
+    document.getElementById('evolveTarget').style.display = 'none';
+    updateEvolveButton();
+    saveGame();
+    updateQuestProgress('evolve');
+    
+    showTip(`✨ 成功进化出 ${newCard.name}！`);
+}
+
+// ========== 装备系统 ==========
+const EQUIPMENT_TYPES = {
+    weapon: { name: '武器', icon: '🗡️', stat: 'atk', emoji: '🗡️' },
+    armor: { name: '防具', icon: '🛡️', stat: 'def', emoji: '🛡️' },
+    accessory: { name: '饰品', icon: '💍', stat: 'hp', emoji: '💍' }
+};
+
+const EQUIPMENT_NAMES = {
+    weapon: ['铁剑', '钢剑', '魔法剑', '龙牙剑', '圣剑'],
+    armor: ['皮甲', '铁甲', '钢甲', '龙鳞甲', '圣甲'],
+    accessory: ['铜戒', '银戒', '金戒', '宝石戒', '龙戒']
+};
+
+let currentEquipTab = 'inventory';
+
+function switchEquipTab(tab) {
+    currentEquipTab = tab;
+    document.querySelectorAll('.equip-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('equipInventoryArea').style.display = tab === 'inventory' ? 'block' : 'none';
+    document.getElementById('equipEquipArea').style.display = tab === 'equip' ? 'block' : 'none';
+    document.getElementById('equipForgeArea').style.display = tab === 'forge' ? 'block' : 'none';
+    
+    if (tab === 'equip') updateEquipEquipArea();
+    if (tab === 'forge') updateForgeArea();
+}
+
+function updateEquipPage() {
+    updateEquipInventory();
+    document.getElementById('materialIron').textContent = gameData.materials.iron;
+    document.getElementById('materialGem').textContent = gameData.materials.gem;
+    document.getElementById('materialCrystal').textContent = gameData.materials.crystal;
+}
+
+function updateEquipInventory() {
+    const grid = document.getElementById('equipGrid');
+    if (gameData.equipments.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: span 3;"><div style="font-size: 40px;">🗡️</div><p style="font-size: 12px;">装备背包为空<br>去锻造页面制作装备</p></div>';
+        return;
+    }
+    
+    grid.innerHTML = gameData.equipments.map((eq, i) => {
+        const typeInfo = EQUIPMENT_TYPES[eq.type];
+        const equipped = eq.equippedOn ? 'equip-item-equipped' : '';
+        const equippedMark = eq.equippedOn ? '<span class="equip-equipped-mark">✓</span>' : '';
+        return `<div class="equip-item ${equipped} equip-rarity-${eq.rarity}" onclick="selectEquipment(${i})">
+            ${equippedMark}
+            <div class="equip-icon">${typeInfo.icon}</div>
+            <div class="equip-name">${eq.name}</div>
+            <div class="equip-stat">+${eq.value} ${typeInfo.stat.toUpperCase()}</div>
+        </div>`;
+    }).join('');
+}
+
+function selectEquipment(index) {
+    const eq = gameData.equipments[index];
+    const typeInfo = EQUIPMENT_TYPES[eq.type];
+    
+    showTip(`${eq.name} [${eq.rarity}] - ${typeInfo.name} +${eq.value} ${typeInfo.stat.toUpperCase()}`);
+}
+
+function updateEquipEquipArea() {
+    const select = document.getElementById('equipPetSelect');
+    select.innerHTML = '<option value="">选择宠物...</option>' + 
+        gameData.cards.map((c, i) => `<option value="${i}">${c.emoji} ${c.name} [${c.rarity}]</option>`).join('');
+    
+    updateEquipPreview();
+}
+
+function updateEquipPreview() {
+    const petIndex = document.getElementById('equipPetSelect').value;
+    const preview = document.getElementById('equipPreview');
+    
+    if (petIndex === '') {
+        preview.innerHTML = '<div class="empty-state"><p style="font-size: 12px;">选择宠物查看装备情况</p></div>';
+        return;
+    }
+    
+    const pet = gameData.cards[petIndex];
+    const equipped = gameData.equipments.filter(e => e.equippedOn === pet.id);
+    
+    let html = `<div style="margin-bottom: 15px;"><div class="card ${pet.rarity}" style="width: 150px; margin: 0 auto;">
+        <div class="element-icon">${getElementIcon(pet.element)}</div>
+        <div class="card-emoji">${pet.emoji}</div>
+        <div class="card-name">${pet.name}</div>
+        <div class="card-stats">❤️${pet.hp} ⚔️${pet.atk} 🛡️${pet.def}</div>
+    </div></div>`;
+    
+    html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px;">';
+    ['weapon', 'armor', 'accessory'].forEach(type => {
+        const eq = equipped.find(e => e.type === type);
+        const typeInfo = EQUIPMENT_TYPES[type];
+        if (eq) {
+            html += `<div class="equip-item equip-item-equipped" onclick="unequipItem(${eq.id})">
+                <div class="equip-icon">${typeInfo.icon}</div>
+                <div class="equip-name">${eq.name}</div>
+                <div class="equip-stat">+${eq.value}</div>
+            </div>`;
+        } else {
+            html += `<div class="equip-item" style="opacity: 0.5;" onclick="showEquipOptions('${type}', ${petIndex})">
+                <div class="equip-icon">${typeInfo.icon}</div>
+                <div class="equip-name">未装备</div>
+                <div class="equip-stat">点击装备</div>
+            </div>`;
+        }
+    });
+    html += '</div>';
+    
+    preview.innerHTML = html;
+}
+
+function showEquipOptions(type, petIndex) {
+    const pet = gameData.cards[petIndex];
+    const available = gameData.equipments.filter(e => e.type === type && !e.equippedOn);
+    
+    if (available.length === 0) {
+        alert('没有可用的' + EQUIPMENT_TYPES[type].name + '！');
+        return;
+    }
+    
+    let html = '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px;">';
+    html += available.map((eq, i) => `<div class="equip-item" onclick="equipItem(${eq.id}, ${pet.id})">
+        <div class="equip-icon">${EQUIPMENT_TYPES[eq.type].icon}</div>
+        <div class="equip-name">${eq.name}</div>
+        <div class="equip-stat">+${eq.value}</div>
+    </div>`).join('');
+    html += '</div>';
+    
+    document.getElementById('equipPreview').innerHTML += html;
+}
+
+function equipItem(equipId, petId) {
+    const equip = gameData.equipments.find(e => e.id === equipId);
+    if (!equip) return;
+    
+    // 卸下同类型装备
+    gameData.equipments.forEach(e => {
+        if (e.equippedOn === petId && e.type === equip.type) {
+            e.equippedOn = null;
+            // 移除属性加成
+            const pet = gameData.cards.find(c => c.id === petId);
+            if (pet) {
+                const stat = EQUIPMENT_TYPES[e.type].stat;
+                pet[stat] -= e.value;
+            }
+        }
+    });
+    
+    // 装备新装备
+    equip.equippedOn = petId;
+    const pet = gameData.cards.find(c => c.id === petId);
+    if (pet) {
+        const stat = EQUIPMENT_TYPES[equip.type].stat;
+        pet[stat] += equip.value;
+    }
+    
+    saveGame();
+    updateEquipPreview();
+    showTip(`✓ 装备成功！`);
+}
+
+function unequipItem(equipId) {
+    const equip = gameData.equipments.find(e => e.id === equipId);
+    if (!equip || !equip.equippedOn) return;
+    
+    const pet = gameData.cards.find(c => c.id === equip.equippedOn);
+    if (pet) {
+        const stat = EQUIPMENT_TYPES[equip.type].stat;
+        pet[stat] -= equip.value;
+    }
+    
+    equip.equippedOn = null;
+    saveGame();
+    updateEquipPreview();
+    showTip(`✓ 卸下装备`);
+}
+
+function updateForgeArea() {
+    document.getElementById('materialIron').textContent = gameData.materials.iron;
+    document.getElementById('materialGem').textContent = gameData.materials.gem;
+    document.getElementById('materialCrystal').textContent = gameData.materials.crystal;
+}
+
+function forgeEquipment(type) {
+    const costs = { weapon: { iron: 20 }, armor: { iron: 20 }, accessory: { gem: 10 } };
+    const cost = costs[type];
+    
+    // 检查材料
+    for (let mat in cost) {
+        if (gameData.materials[mat] < cost[mat]) {
+            alert(`材料不足！需要 ${cost[mat]} ${mat === 'iron' ? '🪨精铁' : '💎宝石'}`);
+            return;
+        }
+    }
+    
+    // 消耗材料
+    for (let mat in cost) {
+        gameData.materials[mat] -= cost[mat];
+    }
+    
+    // 生成装备
+    const rarityRoll = Math.random();
+    let rarity;
+    if (rarityRoll < 0.5) rarity = 'N';
+    else if (rarityRoll < 0.8) rarity = 'R';
+    else if (rarityRoll < 0.95) rarity = 'SR';
+    else rarity = 'SSR';
+    
+    const rarityMultipliers = { N: 1, R: 1.5, SR: 2.5, SSR: 4 };
+    const baseValues = { weapon: 10, armor: 5, accessory: 50 };
+    
+    const names = EQUIPMENT_NAMES[type];
+    const name = names[['N', 'R', 'SR', 'SSR'].indexOf(rarity)];
+    
+    const equipment = {
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        type,
+        name,
+        rarity,
+        value: Math.floor(baseValues[type] * rarityMultipliers[rarity]),
+        equippedOn: null
+    };
+    
+    gameData.equipments.push(equipment);
+    
+    document.getElementById('forgeResult').style.display = 'block';
+    document.getElementById('forgeResult').innerHTML = `
+        <div style="font-size: 18px; margin-bottom: 10px;">🔨 锻造成功！</div>
+        <div class="equip-item equip-rarity-${rarity}" style="display: inline-block; padding: 15px;">
+            <div class="equip-icon" style="font-size: 32px;">${EQUIPMENT_TYPES[type].icon}</div>
+            <div class="equip-name">${name}</div>
+            <div class="equip-stat">[${rarity}] +${equipment.value} ${EQUIPMENT_TYPES[type].stat.toUpperCase()}</div>
+        </div>
+    `;
+    
+    updateForgeArea();
+    updateEquipInventory();
+    saveGame();
+    showTip(`🔨 锻造成功！获得 ${name} [${rarity}]`);
+}
+
+// 战斗和爬塔奖励材料
+function addMaterialReward() {
+    // 战斗胜利时有概率获得材料（各自独立判定）
+    // 30%概率获得1-3个精铁
+    if (Math.random() < 0.3) {
+        gameData.materials.iron += Math.floor(Math.random() * 3) + 1;
+    }
+    // 10%概率获得1个宝石
+    if (Math.random() < 0.1) {
+        gameData.materials.gem += 1;
+    }
+    // 5%概率获得1个水晶
+    if (Math.random() < 0.05) {
+        gameData.materials.crystal += 1;
+    }
+}
+
+// ========== 第四阶段：每日副本 + 任务系统 + 签到系统 + 离线收益 ==========
+
+// 任务定义
+const QUEST_DEFINITIONS = {
+    daily: [
+        { id: 'd_pull', title: '召唤大师', desc: '进行3次宠物召唤', target: 3, reward: { coins: 200, gems: 20 }, type: 'pull' },
+        { id: 'd_battle', title: '战斗狂人', desc: '进行5次战斗', target: 5, reward: { coins: 300, gems: 30 }, type: 'battle' },
+        { id: 'd_tower', title: '爬塔挑战', desc: '挑战爬塔3次', target: 3, reward: { coins: 400, gems: 40 }, type: 'tower' },
+        { id: 'd_dungeon', title: '副本探索', desc: '完成1次每日副本', target: 1, reward: { coins: 500, gems: 50 }, type: 'dungeon' },
+        { id: 'd_sell', title: '市场交易', desc: '出售2只宠物', target: 2, reward: { coins: 200, gems: 20 }, type: 'sell' }
+    ],
+    weekly: [
+        { id: 'w_pull', title: '召唤达人', desc: '累计召唤20次', target: 20, reward: { coins: 2000, gems: 200 }, type: 'pull' },
+        { id: 'w_battle', title: '战斗专家', desc: '累计战斗30次', target: 30, reward: { coins: 3000, gems: 300 }, type: 'battle' },
+        { id: 'w_tower', title: '爬塔高手', desc: '累计爬塔20次', target: 20, reward: { coins: 4000, gems: 400 }, type: 'tower' },
+        { id: 'w_evolve', title: '进化大师', desc: '进化5只宠物', target: 5, reward: { coins: 5000, gems: 500 }, type: 'evolve' },
+        { id: 'w_checkin', title: '签到达人', desc: '累计签到5天', target: 5, reward: { coins: 3000, gems: 300 }, type: 'checkin' }
+    ],
+    achievements: [
+        { id: 'a_first', title: '初次召唤', desc: '进行第一次召唤', target: 1, reward: { gems: 100 }, type: 'pull' },
+        { id: 'a_collector', title: '宠物收藏家', desc: '收集10种不同宠物', target: 10, reward: { gems: 200 }, type: 'collection' },
+        { id: 'a_master', title: '宠物大师', desc: '收集30种不同宠物', target: 30, reward: { gems: 500 }, type: 'collection' },
+        { id: 'a_tower50', title: '爬塔50层', desc: '无尽之塔达到50层', target: 50, reward: { gems: 300 }, type: 'towerLevel' },
+        { id: 'a_tower100', title: '爬塔100层', desc: '无尽之塔达到100层', target: 100, reward: { gems: 1000 }, type: 'towerLevel' },
+        { id: 'a_win10', title: '十连胜', desc: '累计赢得10场战斗', target: 10, reward: { gems: 100 }, type: 'win' },
+        { id: 'a_win100', title: '百人斩', desc: '累计赢得100场战斗', target: 100, reward: { gems: 500 }, type: 'win' },
+        { id: 'a_h8', title: '传说拥有者', desc: '获得第一只H8宠物', target: 1, reward: { gems: 1000 }, type: 'h8' },
+        { id: 'a_equip', title: '装备大师', desc: '锻造10件装备', target: 10, reward: { gems: 200 }, type: 'forge' },
+        { id: 'a_streak7', title: '周签到', desc: '连续签到7天', target: 7, reward: { gems: 300 }, type: 'streak' }
+    ]
+};
+
+// 检查每日重置
+function checkDailyReset() {
+    const now = new Date();
+    const today = now.toDateString();
+    
+    // 检查副本重置
+    if (gameData.lastDungeonReset !== today) {
+        gameData.dungeonCounts = { gold: 3, exp: 3, material: 3 };
+        gameData.lastDungeonReset = today;
+    }
+    
+    // 检查任务重置
+    if (gameData.dailyQuests.length === 0 || gameData.dailyQuests[0].date !== today) {
+        initDailyQuests();
+    }
+}
+
+// 检查每周重置
+function checkWeeklyReset() {
+    const now = new Date();
+    const weekStart = getWeekStart(now).toDateString();
+    
+    if (gameData.weeklyQuests.length === 0 || gameData.weeklyQuests[0].week !== weekStart) {
+        initWeeklyQuests();
+    }
+}
+
+// 获取本周开始日期
+function getWeekStart(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+}
+
+// 初始化每日任务
+function initDailyQuests() {
+    const today = new Date().toDateString();
+    gameData.dailyQuests = QUEST_DEFINITIONS.daily.map(q => ({
+        ...q,
+        date: today,
+        progress: 0,
+        completed: false,
+        claimed: false
+    }));
+}
+
+// 初始化每周任务
+function initWeeklyQuests() {
+    const weekStart = getWeekStart(new Date()).toDateString();
+    gameData.weeklyQuests = QUEST_DEFINITIONS.weekly.map(q => ({
+        ...q,
+        week: weekStart,
+        progress: 0,
+        completed: false,
+        claimed: false
+    }));
+}
+
+// 更新任务进度
+function updateQuestProgress(type, count = 1) {
+    // 更新每日任务
+    gameData.dailyQuests.forEach(q => {
+        if (q.type === type && !q.completed) {
+            q.progress = Math.min(q.target, q.progress + count);
+            if (q.progress >= q.target) {
+                q.completed = true;
+            }
+        }
+    });
+    
+    // 更新每周任务
+    gameData.weeklyQuests.forEach(q => {
+        if (q.type === type && !q.completed) {
+            q.progress = Math.min(q.target, q.progress + count);
+            if (q.progress >= q.target) {
+                q.completed = true;
+            }
+        }
+    });
+    
+    // 检查成就
+    checkAchievements(type, count);
+    saveGame();
+}
+
+// 检查成就
+function checkAchievements(type, count = 1) {
+    QUEST_DEFINITIONS.achievements.forEach(a => {
+        if (gameData.achievements.includes(a.id)) return;
+        
+        let shouldUnlock = false;
+        let progress = 0;
+        
+        switch (a.type) {
+            case 'pull':
+                progress = gameData.battles.win + gameData.battles.lose; // 简化统计
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'collection':
+                progress = gameData.collectionOwned ? gameData.collectionOwned.length : 0;
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'towerLevel':
+                progress = gameData.towerHighest || 1;
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'win':
+                progress = gameData.battles.win || 0;
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'h8':
+                progress = gameData.cards.filter(c => c.rarity === 'H8').length;
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'forge':
+                progress = gameData.equipments ? gameData.equipments.length : 0;
+                shouldUnlock = progress >= a.target;
+                break;
+            case 'streak':
+                progress = gameData.checkinStreak || 0;
+                shouldUnlock = progress >= a.target;
+                break;
+        }
+        
+        if (shouldUnlock) {
+            unlockAchievement(a);
+        }
+    });
+}
+
+// 解锁成就
+function unlockAchievement(achievement) {
+    gameData.achievements.push(achievement.id);
+    gameData.achievementPoints += 10;
+    gameData.gems += achievement.reward.gems;
+    showTip(`🏆 解锁成就：${achievement.title}！+${achievement.reward.gems}💎`);
+    updateUI();
+    saveGame();
+}
+
+// 计算离线收益
+function calculateOfflineRewards() {
+    const now = Date.now();
+    const lastLogin = gameData.lastLoginTime;
+    
+    if (!lastLogin) {
+        gameData.lastLoginTime = now;
+        return;
+    }
+    
+    const offlineTime = now - lastLogin;
+    const offlineHours = Math.floor(offlineTime / (1000 * 60 * 60));
+    
+    if (offlineHours < 1) {
+        gameData.lastLoginTime = now;
+        return;
+    }
+    
+    // 最多计算8小时离线收益
+    const validHours = Math.min(offlineHours, 8);
+    const coins = validHours * 50;
+    const materials = {
+        iron: Math.floor(validHours * 0.5),
+        gem: Math.floor(validHours * 0.1)
+    };
+    
+    gameData.coins += coins;
+    gameData.materials.iron += materials.iron;
+    gameData.materials.gem += materials.gem;
+    
+    // 显示离线收益弹窗
+    showOfflineReward(validHours, coins, materials);
+    
+    gameData.lastLoginTime = now;
+    saveGame();
+}
+
+// 显示离线收益弹窗
+function showOfflineReward(hours, coins, materials) {
+    const div = document.createElement('div');
+    div.className = 'offline-reward';
+    div.innerHTML = `
+        <div class="offline-title">📱 离线收益</div>
+        <div class="offline-time">离线 ${hours} 小时</div>
+        <div class="offline-rewards">
+            <div class="offline-reward-item">💰 ${coins} 金币</div>
+            ${materials.iron > 0 ? `<div class="offline-reward-item">🪨 ${materials.iron} 精铁</div>` : ''}
+            ${materials.gem > 0 ? `<div class="offline-reward-item">💎 ${materials.gem} 宝石</div>` : ''}
+        </div>
+        <button class="btn" onclick="this.parentElement.remove()">领取</button>
+    `;
+    document.body.appendChild(div);
+}
+
+// ========== 任务页面 ==========
+function updateQuestPage() {
+    updateDailyQuests();
+    updateWeeklyQuests();
+    updateAchievements();
+}
+
+function switchQuestTab(tab, btn) {
+    document.querySelectorAll('.quest-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    
+    document.getElementById('dailyQuestArea').style.display = tab === 'daily' ? 'block' : 'none';
+    document.getElementById('weeklyQuestArea').style.display = tab === 'weekly' ? 'block' : 'none';
+    document.getElementById('achievementArea').style.display = tab === 'achievement' ? 'block' : 'none';
+}
+
+function updateDailyQuests() {
+    const list = document.getElementById('dailyQuestList');
+    const completed = gameData.dailyQuests.filter(q => q.completed).length;
+    document.getElementById('dailyProgress').textContent = `${completed}/${gameData.dailyQuests.length}`;
+    
+    list.innerHTML = gameData.dailyQuests.map((q, i) => `
+        <div class="quest-item ${q.completed ? 'completed' : ''}">
+            <div class="quest-info">
+                <div class="quest-title">${q.title}</div>
+                <div class="quest-desc">${q.desc}</div>
+                <div class="quest-reward">奖励: 💰${q.reward.coins} 💎${q.reward.gems}</div>
+                <div class="quest-progress">进度: ${q.progress}/${q.target}</div>
+            </div>
+            <button class="quest-btn ${q.claimed ? 'claimed' : ''}" ${!q.completed || q.claimed ? 'disabled' : ''} onclick="claimQuestReward('daily', ${i})">
+                ${q.claimed ? '已领取' : (q.completed ? '领取' : '未完成')}
+            </button>
+        </div>
+    `).join('');
+}
+
+function updateWeeklyQuests() {
+    const list = document.getElementById('weeklyQuestList');
+    const completed = gameData.weeklyQuests.filter(q => q.completed).length;
+    document.getElementById('weeklyProgress').textContent = `${completed}/${gameData.weeklyQuests.length}`;
+    
+    list.innerHTML = gameData.weeklyQuests.map((q, i) => `
+        <div class="quest-item ${q.completed ? 'completed' : ''}">
+            <div class="quest-info">
+                <div class="quest-title">${q.title}</div>
+                <div class="quest-desc">${q.desc}</div>
+                <div class="quest-reward">奖励: 💰${q.reward.coins} 💎${q.reward.gems}</div>
+                <div class="quest-progress">进度: ${q.progress}/${q.target}</div>
+            </div>
+            <button class="quest-btn ${q.claimed ? 'claimed' : ''}" ${!q.completed || q.claimed ? 'disabled' : ''} onclick="claimQuestReward('weekly', ${i})">
+                ${q.claimed ? '已领取' : (q.completed ? '领取' : '未完成')}
+            </button>
+        </div>
+    `).join('');
+}
+
+function updateAchievements() {
+    document.getElementById('achievementPoints').textContent = gameData.achievementPoints;
+    const list = document.getElementById('achievementList');
+    
+    list.innerHTML = QUEST_DEFINITIONS.achievements.map(a => {
+        const unlocked = gameData.achievements.includes(a.id);
+        return `
+            <div class="achievement-item ${unlocked ? 'unlocked' : ''}">
+                <div class="achievement-icon">${unlocked ? '🏆' : '🔒'}</div>
+                <div class="achievement-info">
+                    <div class="achievement-title">${a.title}</div>
+                    <div class="achievement-desc">${a.desc}</div>
+                    <div class="achievement-reward">奖励: 💎${a.reward.gems}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function claimQuestReward(type, index) {
+    const quests = type === 'daily' ? gameData.dailyQuests : gameData.weeklyQuests;
+    const q = quests[index];
+    
+    if (!q.completed || q.claimed) return;
+    
+    gameData.coins += q.reward.coins;
+    gameData.gems += q.reward.gems;
+    q.claimed = true;
+    
+    updateUI();
+    updateQuestPage();
+    saveGame();
+    showTip(`✅ 领取奖励：💰${q.reward.coins} 💎${q.reward.gems}`);
+}
+
+// ========== 副本系统 ==========
+function updateDungeonPage() {
+    document.getElementById('goldDungeonCount').textContent = gameData.dungeonCounts.gold;
+    document.getElementById('expDungeonCount').textContent = gameData.dungeonCounts.exp;
+    document.getElementById('materialDungeonCount').textContent = gameData.dungeonCounts.material;
+    
+    // 更新按钮状态
+    ['gold', 'exp', 'material'].forEach(type => {
+        const btn = document.querySelector(`.dungeon-item[onclick="startDungeon('${type}')"]`);
+        if (btn) {
+            if (gameData.dungeonCounts[type] <= 0) {
+                btn.classList.add('disabled');
+                btn.onclick = null;
+            } else {
+                btn.classList.remove('disabled');
+                btn.onclick = () => startDungeon(type);
+            }
+        }
+    });
+}
+
+let dungeonBattleInProgress = false;
+
+function startDungeon(type) {
+    if (!gameData.team || gameData.team.length === 0) {
+        alert('请先组建队伍！');
+        return;
+    }
+    if (gameData.dungeonCounts[type] <= 0) {
+        alert('今日次数已用完！');
+        return;
+    }
+    if (dungeonBattleInProgress) return;
+    
+    dungeonBattleInProgress = true;
+    gameData.dungeonCounts[type]--;
+    
+    const log = document.getElementById('dungeonBattleLog');
+    const rewardArea = document.getElementById('dungeonRewardArea');
+    log.style.display = 'block';
+    log.innerHTML = '';
+    rewardArea.innerHTML = '';
+    
+    function addLog(text, type = '') {
+        log.innerHTML += `<div class="log-entry ${type}">${text}</div>`;
+        log.scrollTop = log.scrollHeight;
+    }
+    
+    // 根据副本类型生成敌人
+    const enemyStrength = type === 'gold' ? 1 : type === 'exp' ? 1.2 : 1.5;
+    const enemy = generateDungeonEnemy(enemyStrength);
+    
+    addLog(`⚔️ 开始挑战${type === 'gold' ? '金币' : type === 'exp' ? '经验' : '材料'}副本！`);
+    
+    // 简化战斗：直接计算胜负
+    const myPower = gameData.team[0].hp + gameData.team[0].atk * 2 + gameData.team[0].def;
+    const enemyPower = enemy.hp + enemy.atk * 2 + enemy.def;
+    const winChance = myPower / (myPower + enemyPower);
+    const win = Math.random() < winChance;
+    
+    setTimeout(() => {
+        if (win) {
+            let reward = {};
+            switch (type) {
+                case 'gold':
+                    reward = { coins: 500 + Math.floor(Math.random() * 300) };
+                    gameData.coins += reward.coins;
+                    break;
+                case 'exp':
+                    reward = { exp: '宠物升级材料' };
+                    // 给队伍宠物加经验（这里简化处理）
+                    gameData.team.forEach(p => {
+                        p.hp = Math.floor(p.hp * 1.05);
+                        p.atk = Math.floor(p.atk * 1.05);
+                        p.def = Math.floor(p.def * 1.05);
+                    });
+                    break;
+                case 'material':
+                    reward = { iron: 10, gem: 2 };
+                    gameData.materials.iron += reward.iron;
+                    gameData.materials.gem += reward.gem;
+                    break;
+            }
+            
+            addLog(`🎉 挑战成功！`, 'win');
+            rewardArea.innerHTML = `<div class="tower-battle-result"><div style="font-size: 18px; margin-bottom: 10px;">🎉 通关成功！</div><div>${formatReward(reward)}</div></div>`;
+            
+            updateQuestProgress('dungeon');
+        } else {
+            addLog(`💔 挑战失败...`, '');
+            rewardArea.innerHTML = `<div class="tower-battle-result fail"><div style="font-size: 18px; margin-bottom: 10px;">💔 挑战失败</div><div>明日再来！</div></div>`;
+        }
+        
+        dungeonBattleInProgress = false;
+        updateDungeonPage();
+        updateUI();
+        saveGame();
+    }, 1000);
+}
+
+function generateDungeonEnemy(strength) {
+    const rarities = ['R', 'SR', 'SSR'];
+    const r = rarities[Math.floor(Math.random() * rarities.length)];
+    const pet = PETS[r][Math.floor(Math.random() * PETS[r].length)];
+    return {
+        ...pet,
+        hp: Math.floor(pet.hp * strength),
+        atk: Math.floor(pet.atk * strength),
+        def: Math.floor(pet.def * strength)
+    };
+}
+
+function formatReward(reward) {
+    const parts = [];
+    if (reward.coins) parts.push(`💰 ${reward.coins}`);
+    if (reward.iron) parts.push(`🪨 ${reward.iron}`);
+    if (reward.gem) parts.push(`💎 ${reward.gem}`);
+    if (reward.exp) parts.push(`⭐ ${reward.exp}`);
+    return parts.join(' ');
+}
+
+// ========== 签到系统 ==========
+function updateCheckinPage() {
+    const now = new Date();
+    const today = now.toDateString();
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    
+    // 检查今天是否已签到
+    const todayChecked = gameData.checkinDays.includes(today);
+    const btn = document.getElementById('checkinBtn');
+    btn.disabled = todayChecked;
+    btn.textContent = todayChecked ? '今日已签到' : '立即签到';
+    
+    // 显示连续签到天数
+    document.getElementById('checkinStreak').textContent = gameData.checkinStreak || 0;
+    
+    // 生成日历
+    const calendar = document.getElementById('checkinCalendar');
+    let html = '';
+    
+    for (let i = 1; i <= daysInMonth; i++) {
+        const date = new Date(now.getFullYear(), now.getMonth(), i).toDateString();
+        const checked = gameData.checkinDays.includes(date);
+        const isToday = i === now.getDate();
+        
+        // 计算奖励
+        let reward = '💰';
+        if (i % 7 === 0) reward = '💎';
+        else if (i % 5 === 0) reward = '🪨';
+        else if (i % 3 === 0) reward = '⭐';
+        
+        html += `<div class="checkin-day ${checked ? 'checked' : ''} ${isToday ? 'today' : ''}">
+            <div class="checkin-day-num">${i}</div>
+            <div class="checkin-day-icon">${checked ? '✓' : reward}</div>
+        </div>`;
+    }
+    
+    calendar.innerHTML = html;
+}
+
+function doCheckin() {
+    const now = new Date();
+    const today = now.toDateString();
+    
+    if (gameData.checkinDays.includes(today)) {
+        alert('今天已经签到过了！');
+        return;
+    }
+    
+    // 检查是否连续签到
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toDateString();
+    
+    if (gameData.checkinDays.includes(yesterdayStr)) {
+        gameData.checkinStreak = (gameData.checkinStreak || 0) + 1;
+    } else {
+        gameData.checkinStreak = 1;
+    }
+    
+    gameData.checkinDays.push(today);
+    gameData.lastCheckinDate = today;
+    
+    // 计算奖励
+    const day = now.getDate();
+    let reward = { coins: 100 + gameData.checkinStreak * 10 };
+    
+    if (day % 7 === 0) {
+        reward.gems = 100;
+    } else if (day % 5 === 0) {
+        reward.iron = 20;
+    } else if (day % 3 === 0) {
+        reward.coins += 200;
+    }
+    
+    // 应用奖励
+    gameData.coins += reward.coins || 0;
+    gameData.gems += reward.gems || 0;
+    gameData.materials.iron += reward.iron || 0;
+    
+    updateUI();
+    updateCheckinPage();
+    saveGame();
+    
+    document.getElementById('checkinReward').innerHTML = `<div class="tower-battle-result"><div style="font-size: 16px;">🎁 签到成功！</div><div>连续签到 ${gameData.checkinStreak} 天</div><div>${formatReward(reward)}</div></div>`;
+    
+    updateQuestProgress('checkin');
+    checkAchievements('streak');
+    
+    showTip(`📅 签到成功！连续 ${gameData.checkinStreak} 天`);
 }
 
 window.onload = loadGame;
